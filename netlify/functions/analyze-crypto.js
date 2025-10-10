@@ -643,77 +643,76 @@ async function enrichWithHistorical(results) {
 
 // Analisar uma criptomoeda individual
 function analyzeCoin(coin) {
-  // Base score
-  let score = 0.4;
-  let type = 'NEUTRAL';
-
-  // Momentum component from absolute 24h change (but we won't return it)
+  // Momentum and turnover proxies (per-coin)
   const pct = Number(coin.price_change_percentage_24h || 0);
-  const momentum = Math.min(Math.abs(pct) / 12, 1); // up to ~1 for |12%|
-
-  // Volume factor using log scale (normalize typical 10M..50B)
-  const vol = Math.max(0, Math.log10((coin.volume_24h || 1)) - 7); // ~0..3
-  const volNorm = Math.min(vol / 3, 1);
+  const momentumAbs = Math.min(Math.abs(pct) / 12, 1); // ~0..1 for |12%|
+  const turnoverRaw = (coin.volume_24h || 0) / Math.max(coin.market_cap || 1, 1);
+  const turnover = Math.min(Math.max(turnoverRaw, 0), 1); // clamp 0..1
 
   // Market cap factor: smaller caps → higher potential (more volatility)
   const capLog = Math.log10((coin.market_cap || 1));
   const capNorm = Math.max(0, Math.min(1, (12 - capLog) / 4)); // 0 (mega caps) .. 1 (small caps)
 
-  // Aggregate score
-  score += 0.45 * momentum + 0.35 * volNorm + 0.20 * capNorm;
+  // Score primarily for ranking (0..1)
+  let score = 0.35
+    + 0.40 * momentumAbs
+    + 0.15 * Math.min(turnover * 4, 1)
+    + 0.10 * capNorm;
   score = Math.max(0, Math.min(1, score));
 
-  // Potential from score (per-coin, 5%..25%)
-  const potentialGain = Math.round((5 + 20 * score) * 10) / 10;
+  // Adaptive potential (moderate range ~4–35% based on volatility/turnover/cap)
+  const volExp = Math.min(1, momentumAbs * 0.7 + Math.min(turnover * 3, 1) * 0.3);
+  const potentialGain = Math.round((4 + 32 * (0.55 * volExp + 0.45 * capNorm)) * 10) / 10;
 
-  // Directional bias for type
-  if (pct > 0 && score >= 0.55) type = 'LONG';
-  if (pct < 0 && score >= 0.55) type = 'SHORT';
+  // Direction/type using sign and confidence
+  let type = 'NEUTRAL';
+  if (pct >= 1 || (pct > 0 && score >= 0.6)) type = 'LONG';
+  if (pct <= -1 || (pct < 0 && score >= 0.6)) type = 'SHORT';
   if (score < 0.4) type = 'SHORT';
-  if (score > 0.75) type = 'LONG';
 
-  const description = generateDescription(coin, score);
+  const description = generateDescription(coin, type, potentialGain, score);
 
   return { type, score, potentialGain, description };
 }
 
 // Generate analysis description
-function generateDescription(coin, score) {
-  let description = `Technical Analysis ${coin.symbol}:\n`;
+function generateDescription(coin, type, potentialGain, score) {
+  let description = `Análise Técnica ${coin.symbol}:\n`;
   
-  // Trend based on 24h variation (omit numeric percentage)
-  description += `• Trend: ${coin.price_change_percentage_24h > 0 ? 'Bullish' : coin.price_change_percentage_24h < 0 ? 'Bearish' : 'Neutral'} (24h)\n`;
+  // Tendência baseada na variação de 24h (sem exibir o percentual numérico)
+  description += `• Tendência: ${coin.price_change_percentage_24h > 0 ? 'Altista' : coin.price_change_percentage_24h < 0 ? 'Baixista' : 'Neutra'} (24h)\n`;
   
-  // Current price - format without decimals and with thousand separators
+  // Preço atual - arredondado e com separadores de milhar
   const formattedPrice = Math.round(coin.current_price).toLocaleString('en-US');
-  description += `• Current price: $${formattedPrice}\n`;
+  description += `• Preço atual: $${formattedPrice}\n`;
   
-  // Volume - format with appropriate units and thousand separators
+  // Volume - com unidades apropriadas
   if (coin.volume_24h > 1000000000) {
     const volumeB = (coin.volume_24h / 1000000000).toFixed(1);
-    description += `• Volume: Very High ($${volumeB}B)\n`;
+    description += `• Volume: Muito Alto ($${volumeB}B)\n`;
   } else if (coin.volume_24h > 100000000) {
     const volumeM = (coin.volume_24h / 1000000).toFixed(1);
-    description += `• Volume: High ($${volumeM}M)\n`;
+    description += `• Volume: Alto ($${volumeM}M)\n`;
   } else {
     const volumeM = (coin.volume_24h / 1000000).toFixed(1);
-    description += `• Volume: Medium ($${volumeM}M)\n`;
+    description += `• Volume: Médio ($${volumeM}M)\n`;
   }
   
-  // Market cap - format with appropriate units
+  // Valor de mercado - com unidades apropriadas
   if (coin.market_cap > 1000000000000) {
     const marketCapT = (coin.market_cap / 1000000000000).toFixed(1);
-    description += `• Market Cap: High ($${marketCapT}T)\n`;
+    description += `• Valor de mercado: Muito Alto ($${marketCapT}T)\n`;
   } else if (coin.market_cap > 10000000000) {
     const marketCapB = (coin.market_cap / 1000000000).toFixed(1);
-    description += `• Market Cap: High ($${marketCapB}B)\n`;
+    description += `• Valor de mercado: Alto ($${marketCapB}B)\n`;
   } else {
     const marketCapB = (coin.market_cap / 1000000000).toFixed(1);
-    description += `• Market Cap: Medium ($${marketCapB}B)\n`;
+    description += `• Valor de mercado: Médio ($${marketCapB}B)\n`;
   }
   
-  description += `\nStrategy: ${score > 0.6 ? 'Buy' : 'Sell'} with target +${Math.round(score * 20 + 5)}%`;
-  description += `\nConfidence: ${Math.round(score * 100)}%`;
+  const action = type === 'LONG' ? 'Comprar' : (type === 'SHORT' ? 'Vender/Short' : 'Manter/Neutro');
+  description += `\nEstratégia: ${action} com alvo +${potentialGain}%`;
+  description += `\nConfiança: ${Math.round(score * 100)}%`;
   
   return description;
 }
