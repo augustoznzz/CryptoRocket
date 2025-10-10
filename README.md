@@ -195,12 +195,6 @@ Este projeto está sob a licença **MIT**. Veja o arquivo `LICENSE` para mais de
 
 **Esta aplicação é apenas para fins educacionais e de demonstração. Os valores apresentados são fictícios e não devem ser usados para tomar decisões de investimento reais. Sempre consulte um profissional financeiro antes de investir em criptomoedas.**
 
-## 📞 Contato
-
-- **GitHub**: [@seu-usuario](https://github.com/seu-usuario)
-- **Email**: seu-email@exemplo.com
-- **LinkedIn**: [Seu Nome](https://linkedin.com/in/seu-perfil)
-
 ---
 
 **⭐ Se este projeto foi útil, considere dar uma estrela no GitHub!**
