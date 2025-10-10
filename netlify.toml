@@ -4,6 +4,16 @@
   functions = "netlify/functions"
 
 [[redirects]]
+  from = "/ml/infer"
+  to = "/.netlify/functions/ml-infer"
+  status = 200
+
+[[redirects]]
+  from = "/ai-sentiment/analyze"
+  to = "/.netlify/functions/ai-sentiment-analyze"
+  status = 200
+
+[[redirects]]
   from = "/"
   to = "/index.html"
   status = 200

@@ -1,0 +1,51 @@
+{
+  "version": "v1.0",
+  "feature_order": [
+    "pct_1h",
+    "pct_24h",
+    "ret_log_24h",
+    "vol_24h",
+    "rsi_14",
+    "volume_ratio_7d",
+    "log_mcap",
+    "sentiment_score_api",
+    "funding_rate",
+    "oi_change_24h"
+  ],
+  "winsor_limits": {
+    "pct_1h": [-3.0, 3.0],
+    "pct_24h": [-3.0, 3.0],
+    "ret_log_24h": [-3.0, 3.0],
+    "vol_24h": [-3.0, 3.0],
+    "rsi_14": [-3.0, 3.0],
+    "volume_ratio_7d": [-3.0, 3.0],
+    "log_mcap": [-3.0, 3.0],
+    "sentiment_score_api": [-3.0, 3.0],
+    "funding_rate": [-3.0, 3.0],
+    "oi_change_24h": [-3.0, 3.0]
+  },
+  "imputer_values": {
+    "pct_1h": 0,
+    "pct_24h": 0,
+    "ret_log_24h": 0,
+    "vol_24h": 0,
+    "rsi_14": 50,
+    "volume_ratio_7d": 1,
+    "log_mcap": 0,
+    "sentiment_score_api": 0,
+    "funding_rate": 0,
+    "oi_change_24h": 0
+  },
+  "scaler_mean": [0,0,0,0,0,0,0,0,0,0],
+  "scaler_std": [1,1,1,1,1,1,1,1,1,1],
+  "lr_long": { "coef": [0,0,0,0,0,0,0,0,0,0], "intercept": 0, "calibration": { "type": "platt", "a": 1, "b": 0 } },
+  "lr_short": { "coef": [0,0,0,0,0,0,0,0,0,0], "intercept": 0, "calibration": { "type": "platt", "a": 1, "b": 0 } },
+  "thresholds": { "theta_long": 0.6, "theta_short": 0.6 },
+  "vol_model": { "type": "realized_24h_rolling", "window_days": 14, "smoothing": 0.3 },
+  "kappa": 1.5,
+  "seed": 20251010,
+  "train_windows": [],
+  "metrics": {}
+}
+
+
