@@ -1,0 +1,199 @@
+[
+  {
+    "asset": "BTC",
+    "timestamp": "2025-10-10T19:58:12.073095",
+    "current_price": 113878,
+    "price_data_last_24h": {
+      "open": 120902.65145420577,
+      "high": 121266.60097396918,
+      "low": 112811.18445963197,
+      "close": 113878.0
+    },
+    "price_change_absolute": {
+      "1h": -304.6,
+      "24h": -6616.51
+    },
+    "technical_indicators": {
+      "rsi_14": 50,
+      "volatility_24h": 4.4813564349020924e-05,
+      "volume_24h": 137949078217.21985,
+      "ema20_gap": -0.022415347450646106,
+      "ema50_gap": 0.0,
+      "macd_histogram": 261.1144651594048
+    },
+    "ai_sentiment": {
+      "score": 0.027777777777777776,
+      "label": "neutral",
+      "confidence": 0.3277777777777778
+    },
+    "ml_prediction": {
+      "probabilities": {
+        "long": 0.2,
+        "short": 0.332,
+        "neutral": 0.467
+      },
+      "signal": "NEUTRAL",
+      "confidence": 0.332,
+      "expected_return_range": {
+        "low": -2.330305346149088,
+        "median": -0.8738645048059079,
+        "high": 3.4954580192236318
+      }
+    },
+    "features_used": {
+      "pct_1h": -0.002674815918436879,
+      "pct_24h": -0.05810171546871734,
+      "ret_log_24h": -0.04648137237497388,
+      "vol_24h": 4.4813564349020924e-05,
+      "rsi_14": 50,
+      "volume_ratio_7d": 1.0,
+      "log_mcap": 28.50291597457912,
+      "sentiment_score_api": 0.027777777777777776,
+      "funding_rate": 0.0,
+      "oi_change_24h": 0.0,
+      "pct_7d": -0.4067120082810214,
+      "vol_7d": 4.4813564349020924e-05,
+      "ema20_gap": -0.022415347450646106,
+      "ema50_gap": 0.0,
+      "macd_hist": 261.1144651594048,
+      "dist_top20d": -0.05810171546871734,
+      "dist_bottom20d": 0.0,
+      "volume_to_mcap": 0.057684572302196355,
+      "sentiment_confidence": 0.3277777777777778
+    }
+  },
+  {
+    "error": "Failed to fetch market data for ETH",
+    "asset": "ETH"
+  },
+  {
+    "asset": "BNB",
+    "timestamp": "2025-10-10T19:58:12.976257",
+    "current_price": 1120.28,
+    "price_data_last_24h": {
+      "open": 1237.0954568088375,
+      "high": 1240.417210175473,
+      "low": 1117.8995407111315,
+      "close": 1120.28
+    },
+    "price_change_absolute": {
+      "1h": -5.06,
+      "24h": -105.78
+    },
+    "technical_indicators": {
+      "rsi_14": 50,
+      "volatility_24h": 0.00012285138837184932,
+      "volume_24h": 7622865372.642872,
+      "ema20_gap": -0.03731339857810734,
+      "ema50_gap": 0.0,
+      "macd_histogram": 4.342166401541386
+    },
+    "ai_sentiment": {
+      "score": 0.027777777777777776,
+      "label": "neutral",
+      "confidence": 0.3277777777777778
+    },
+    "ml_prediction": {
+      "probabilities": {
+        "long": 0.159,
+        "short": 0.386,
+        "neutral": 0.455
+      },
+      "signal": "NEUTRAL",
+      "confidence": 0.386,
+      "expected_return_range": {
+        "low": -6.388272195336165,
+        "median": -2.3956020732510614,
+        "high": 9.582408293004246
+      }
+    },
+    "features_used": {
+      "pct_1h": -0.004513167093828874,
+      "pct_24h": -0.09442719732410143,
+      "ret_log_24h": -0.07554175785928115,
+      "vol_24h": 0.00012285138837184932,
+      "rsi_14": 50,
+      "volume_ratio_7d": 1.0,
+      "log_mcap": 23.881366928732046,
+      "sentiment_score_api": 0.027777777777777776,
+      "funding_rate": 0.0,
+      "oi_change_24h": 0.0,
+      "pct_7d": -0.66099038126871,
+      "vol_7d": 0.00012285138837184932,
+      "ema20_gap": -0.03731339857810734,
+      "ema50_gap": 0.0,
+      "macd_hist": 4.342166401541386,
+      "dist_top20d": -0.09442719732410143,
+      "dist_bottom20d": 0.0,
+      "volume_to_mcap": 0.32402041380143365,
+      "sentiment_confidence": 0.3277777777777778
+    }
+  },
+  {
+    "asset": "SOL",
+    "timestamp": "2025-10-10T19:58:13.600898",
+    "current_price": 190.12,
+    "price_data_last_24h": {
+      "open": 215.68791485389724,
+      "high": 216.13347339217555,
+      "low": 189.36327919979408,
+      "close": 190.12
+    },
+    "price_change_absolute": {
+      "1h": -1.11,
+      "24h": -22.54
+    },
+    "technical_indicators": {
+      "rsi_14": 50,
+      "volatility_24h": 0.00019859003846227832,
+      "volume_24h": 15547435132.147896,
+      "ema20_gap": -0.04760898746308573,
+      "ema50_gap": 0.0,
+      "macd_histogram": 0.9503891340145373
+    },
+    "ai_sentiment": {
+      "score": 0.027777777777777776,
+      "label": "neutral",
+      "confidence": 0.3277777777777778
+    },
+    "ml_prediction": {
+      "probabilities": {
+        "long": 0.208,
+        "short": 0.374,
+        "neutral": 0.418
+      },
+      "signal": "NEUTRAL",
+      "confidence": 0.374,
+      "expected_return_range": {
+        "low": -10.326682000038474,
+        "median": -3.872505750014427,
+        "high": 15.490023000057707
+      }
+    },
+    "features_used": {
+      "pct_1h": -0.005813098829568708,
+      "pct_24h": -0.11854124915258435,
+      "ret_log_24h": -0.09483299932206748,
+      "vol_24h": 0.00019859003846227832,
+      "rsi_14": 50,
+      "volume_ratio_7d": 1.0,
+      "log_mcap": 22.107688447433507,
+      "sentiment_score_api": 0.027777777777777776,
+      "funding_rate": 0.0,
+      "oi_change_24h": 0.0,
+      "pct_7d": -0.8297887440680904,
+      "vol_7d": 0.00019859003846227832,
+      "ema20_gap": -0.04760898746308573,
+      "ema50_gap": 0.0,
+      "macd_hist": 0.9503891340145373,
+      "dist_top20d": -0.11854124915258435,
+      "dist_bottom20d": 0.0,
+      "volume_to_mcap": 3.894140826382309,
+      "sentiment_confidence": 0.3277777777777778
+    }
+  },
+  {
+    "error": "Failed to fetch market data for XRP",
+    "asset": "XRP"
+  }
+]

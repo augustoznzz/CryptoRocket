@@ -1,0 +1,232 @@
+[
+  {
+    "asset": "BTC",
+    "timestamp": "2025-10-10T17:07:39.217650",
+    "current_price": 65876.38,
+    "price_data_last_12h": {
+      "open": 65000,
+      "high": 66300.0,
+      "low": 63700.0,
+      "close": 65876.38
+    },
+    "price_change_absolute": {
+      "1h": 702.81,
+      "24h": 1536.25
+    },
+    "technical_indicators": {
+      "rsi_14": 46.1,
+      "volatility_24h": 0.019,
+      "ema20_gap": -0.022,
+      "ema50_gap": 0.059,
+      "macd_histogram": 0.0073
+    },
+    "ai_sentiment": {
+      "score": 0.037,
+      "label": "neutral",
+      "confidence": 0.337
+    },
+    "ml_prediction": {
+      "probabilities": {
+        "long": 0.438,
+        "short": 0.079,
+        "neutral": 0.483
+      },
+      "signal": "NEUTRAL",
+      "confidence": 0.438,
+      "expected_return_range": {
+        "low": -985.8428443242301,
+        "median": -369.6910666215863,
+        "high": 1478.7642664863452
+      }
+    },
+    "model_info": {
+      "type": "logistic_regression",
+      "version": "v2.0",
+      "trained_until": "2025-01-10"
+    }
+  },
+  {
+    "asset": "ETH",
+    "timestamp": "2025-10-10T17:07:39.217739",
+    "current_price": 65988.92,
+    "price_data_last_12h": {
+      "open": 65000,
+      "high": 66300.0,
+      "low": 63700.0,
+      "close": 65988.92
+    },
+    "price_change_absolute": {
+      "1h": 1148.37,
+      "24h": -2522.1
+    },
+    "technical_indicators": {
+      "rsi_14": 33.0,
+      "volatility_24h": 0.058,
+      "ema20_gap": 0.008,
+      "ema50_gap": -0.032,
+      "macd_histogram": -0.0116
+    },
+    "ai_sentiment": {
+      "score": 0.037,
+      "label": "neutral",
+      "confidence": 0.337
+    },
+    "ml_prediction": {
+      "probabilities": {
+        "long": 0.243,
+        "short": 0.367,
+        "neutral": 0.39
+      },
+      "signal": "NEUTRAL",
+      "confidence": 0.367,
+      "expected_return_range": {
+        "low": -3002.3039345918114,
+        "median": -1125.863975471929,
+        "high": 4503.455901887716
+      }
+    },
+    "model_info": {
+      "type": "logistic_regression",
+      "version": "v2.0",
+      "trained_until": "2025-01-10"
+    }
+  },
+  {
+    "asset": "SOL",
+    "timestamp": "2025-10-10T17:07:39.217795",
+    "current_price": 62863.88,
+    "price_data_last_12h": {
+      "open": 65000,
+      "high": 66300.0,
+      "low": 63700.0,
+      "close": 62863.88
+    },
+    "price_change_absolute": {
+      "1h": -658.05,
+      "24h": 2440.62
+    },
+    "technical_indicators": {
+      "rsi_14": 26.8,
+      "volatility_24h": 0.04,
+      "ema20_gap": -0.028,
+      "ema50_gap": 0.042,
+      "macd_histogram": 0.011
+    },
+    "ai_sentiment": {
+      "score": 0.037,
+      "label": "neutral",
+      "confidence": 0.337
+    },
+    "ml_prediction": {
+      "probabilities": {
+        "long": 0.484,
+        "short": 0.036,
+        "neutral": 0.48
+      },
+      "signal": "NEUTRAL",
+      "confidence": 0.484,
+      "expected_return_range": {
+        "low": -2096.284451478205,
+        "median": -786.1066693043268,
+        "high": 3144.4266772173073
+      }
+    },
+    "model_info": {
+      "type": "logistic_regression",
+      "version": "v2.0",
+      "trained_until": "2025-01-10"
+    }
+  },
+  {
+    "asset": "ADA",
+    "timestamp": "2025-10-10T17:07:39.218126",
+    "current_price": 63372.3,
+    "price_data_last_12h": {
+      "open": 65000,
+      "high": 66300.0,
+      "low": 63700.0,
+      "close": 63372.3
+    },
+    "price_change_absolute": {
+      "1h": 1123.37,
+      "24h": -1737.19
+    },
+    "technical_indicators": {
+      "rsi_14": 61.4,
+      "volatility_24h": 0.024,
+      "ema20_gap": 0.017,
+      "ema50_gap": 0.023,
+      "macd_histogram": 0.013
+    },
+    "ai_sentiment": {
+      "score": 0.037,
+      "label": "neutral",
+      "confidence": 0.337
+    },
+    "ml_prediction": {
+      "probabilities": {
+        "long": 0.221,
+        "short": 0.325,
+        "neutral": 0.454
+      },
+      "signal": "NEUTRAL",
+      "confidence": 0.325,
+      "expected_return_range": {
+        "low": -1254.8762471557777,
+        "median": -470.5785926834166,
+        "high": 1882.3143707336665
+      }
+    },
+    "model_info": {
+      "type": "logistic_regression",
+      "version": "v2.0",
+      "trained_until": "2025-01-10"
+    }
+  },
+  {
+    "asset": "DOGE",
+    "timestamp": "2025-10-10T17:07:39.218184",
+    "current_price": 62985.13,
+    "price_data_last_12h": {
+      "open": 65000,
+      "high": 66300.0,
+      "low": 63700.0,
+      "close": 62985.13
+    },
+    "price_change_absolute": {
+      "1h": 583.45,
+      "24h": -2762.99
+    },
+    "technical_indicators": {
+      "rsi_14": 41.6,
+      "volatility_24h": 0.024,
+      "ema20_gap": 0.007,
+      "ema50_gap": -0.014,
+      "macd_histogram": -0.0074
+    },
+    "ai_sentiment": {
+      "score": 0.037,
+      "label": "neutral",
+      "confidence": 0.337
+    },
+    "ml_prediction": {
+      "probabilities": {
+        "long": 0.203,
+        "short": 0.345,
+        "neutral": 0.452
+      },
+      "signal": "NEUTRAL",
+      "confidence": 0.345,
+      "expected_return_range": {
+        "low": -1272.6937668689989,
+        "median": -477.26016257587446,
+        "high": 1909.0406503034978
+      }
+    },
+    "model_info": {
+      "type": "logistic_regression",
+      "version": "v2.0",
+      "trained_until": "2025-01-10"
+    }
+  }
+]

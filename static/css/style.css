@@ -32,12 +32,15 @@ html {
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
-    height: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     height: 100dvh;
     z-index: 0;
     pointer-events: none;
+    touch-action: none;
     background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%); /* Fundo único aqui */
 }
 
@@ -429,7 +432,33 @@ main {
     /* iOS Safari specific */
     html, body {
         min-height: -webkit-fill-available;
+        height: 100%;
+    }
+    
+    #particles-canvas {
+        min-height: -webkit-fill-available;
+        height: 100%;
     }
 }
 
-/* Removido pseudo-elementos duplicados - apenas canvas com fundo */
+/* Cobertura extra para dispositivos muito pequenos */
+@media (max-width: 480px) {
+    #particles-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100vw !important;
+        min-height: 100vh;
+        min-height: 100dvh;
+        min-height: -webkit-fill-available;
+    }
+}
+
+/* Landscape mode mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+    #particles-canvas {
+        min-height: 100vh;
+        min-height: 100dvh;
+        height: 100vh;
+        height: 100dvh;
+    }
+}

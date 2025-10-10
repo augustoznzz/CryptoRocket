@@ -99,59 +99,228 @@ class MarketDataFetcher:
     def get_12h_ohlcv_data(self, symbol: str) -> Dict:
         """Fetch 12-hour OHLCV data for a symbol"""
         try:
-            # Use Binance API for 12-hour data
-            url = "https://api.binance.com/api/v3/klines"
+            # Check cache first
+            cache_key = f"{symbol}_12h_data"
+            if cache_key in self.cache:
+                cached_data, timestamp = self.cache[cache_key]
+                if time.time() - timestamp < self.cache_timeout:
+                    self.log(f"Using cached data for {symbol}")
+                    return cached_data
+            
+            # Try multiple endpoints for better reliability
+            endpoints = [
+                f"https://api.binance.com/api/v3/klines",
+                f"https://api1.binance.com/api/v3/klines",
+                f"https://api2.binance.com/api/v3/klines",
+                f"https://api3.binance.com/api/v3/klines"
+            ]
+            
+            for url in endpoints:
+                try:
+                    params = {
+                        'symbol': symbol,
+                        'interval': '1h',
+                        'limit': 24  # Get 24 hours for better calculation
+                    }
+                    
+                    self.log(f"Fetching real-time data for {symbol} from {url}")
+                    response = requests.get(url, params=params, timeout=15)
+                    response.raise_for_status()
+                    
+                    klines = response.json()
+                    
+                    if klines and len(klines) > 0:
+                        # Parse OHLCV data
+                        timestamps = [int(k[0]) for k in klines]
+                        opens = [float(k[1]) for k in klines]
+                        highs = [float(k[2]) for k in klines]
+                        lows = [float(k[3]) for k in klines]
+                        closes = [float(k[4]) for k in klines]
+                        volumes = [float(k[5]) for k in klines]
+                        
+                        # Validate data quality
+                        if self._validate_market_data(opens, highs, lows, closes, volumes):
+                            data = {
+                                'timestamps': timestamps,
+                                'open': opens,
+                                'high': highs,
+                                'low': lows,
+                                'close': closes,
+                                'volume': volumes,
+                                'current_price': closes[-1] if closes else 0
+                            }
+                            
+                            # Cache the data
+                            self.cache[cache_key] = (data, time.time())
+                            self.log(f"Successfully fetched real-time data for {symbol}: ${data['current_price']:,.2f}")
+                            return data
+                        else:
+                            self.log(f"Invalid data quality for {symbol}, trying next endpoint")
+                            continue
+                    
+                except requests.exceptions.RequestException as e:
+                    self.log(f"Failed to fetch from {url}: {str(e)}")
+                    continue
+                except Exception as e:
+                    self.log(f"Error processing data from {url}: {str(e)}")
+                    continue
+            
+            # If all Binance endpoints fail, try CoinGecko as fallback
+            self.log(f"All Binance endpoints failed for {symbol}, trying CoinGecko...")
+            return self._get_coingecko_fallback(symbol)
+            
+        except Exception as e:
+            self.log(f"Critical error fetching data for {symbol}: {str(e)}")
+            return self._get_fallback_ohlcv(symbol)
+    
+    def _validate_market_data(self, opens: List[float], highs: List[float], 
+                            lows: List[float], closes: List[float], volumes: List[float]) -> bool:
+        """Validate the quality of market data"""
+        try:
+            # Check if we have enough data points
+            if len(opens) < 12:
+                return False
+            
+            # Check for reasonable price ranges
+            if any(price <= 0 for price in opens + highs + lows + closes):
+                return False
+            
+            # Check if high >= low for all candles
+            for i in range(len(opens)):
+                if highs[i] < lows[i]:
+                    return False
+            
+            # Check for reasonable volume
+            if any(vol < 0 for vol in volumes):
+                return False
+            
+            # Check for reasonable price variations (not too extreme)
+            max_price = max(highs)
+            min_price = min(lows)
+            if max_price / min_price > 10:  # More than 1000% variation seems suspicious
+                return False
+            
+            return True
+            
+        except Exception:
+            return False
+    
+    def _get_coingecko_fallback(self, symbol: str) -> Dict:
+        """Get data from CoinGecko as fallback when Binance fails"""
+        try:
+            # Map Binance symbols to CoinGecko IDs
+            symbol_map = {
+                'BTCUSDT': 'bitcoin',
+                'ETHUSDT': 'ethereum',
+                'BNBUSDT': 'binancecoin',
+                'SOLUSDT': 'solana',
+                'ADAUSDT': 'cardano',
+                'XRPUSDT': 'ripple',
+                'DOGEUSDT': 'dogecoin',
+                'TRXUSDT': 'tron',
+                'LINKUSDT': 'chainlink',
+                'DOTUSDT': 'polkadot'
+            }
+            
+            coin_id = symbol_map.get(symbol, 'bitcoin')  # Default to Bitcoin
+            
+            # Get current price and 24h change
+            url = f"https://api.coingecko.com/api/v3/simple/price"
             params = {
-                'symbol': symbol,
-                'interval': '1h',
-                'limit': 12
+                'ids': coin_id,
+                'vs_currencies': 'usd',
+                'include_24hr_change': 'true',
+                'include_24hr_vol': 'true'
             }
             
             response = requests.get(url, params=params, timeout=10)
             response.raise_for_status()
             
-            klines = response.json()
-            
-            if not klines:
-                return self._get_fallback_ohlcv(symbol)
-            
-            # Parse OHLCV data
-            timestamps = [int(k[0]) for k in klines]
-            opens = [float(k[1]) for k in klines]
-            highs = [float(k[2]) for k in klines]
-            lows = [float(k[3]) for k in klines]
-            closes = [float(k[4]) for k in klines]
-            volumes = [float(k[5]) for k in klines]
-            
-            return {
-                'timestamps': timestamps,
-                'open': opens,
-                'high': highs,
-                'low': lows,
-                'close': closes,
-                'volume': volumes,
-                'current_price': closes[-1] if closes else 0
-            }
+            data = response.json()
+            if coin_id in data:
+                coin_data = data[coin_id]
+                current_price = coin_data.get('usd', 50000)
+                change_24h = coin_data.get('usd_24h_change', 0) / 100
+                volume_24h = coin_data.get('usd_24h_vol', 1000000000)
+                
+                # Generate realistic OHLCV data based on real price
+                opens = []
+                highs = []
+                lows = []
+                closes = []
+                volumes = []
+                
+                for i in range(24):
+                    # Simulate hourly price movement based on 24h change
+                    hourly_change = change_24h / 24 + np.random.normal(0, abs(change_24h) * 0.1)
+                    price = current_price * (1 - change_24h * (23 - i) / 24)
+                    
+                    open_price = price
+                    close_price = price * (1 + hourly_change)
+                    high_price = max(open_price, close_price) * (1 + abs(np.random.normal(0, 0.005)))
+                    low_price = min(open_price, close_price) * (1 - abs(np.random.normal(0, 0.005)))
+                    volume = volume_24h / 24 * (1 + np.random.normal(0, 0.2))
+                    
+                    opens.append(open_price)
+                    highs.append(high_price)
+                    lows.append(low_price)
+                    closes.append(close_price)
+                    volumes.append(volume)
+                
+                self.log(f"Using CoinGecko fallback for {symbol}: ${current_price:,.2f}")
+                
+                return {
+                    'timestamps': [int(time.time() * 1000) - (23-i) * 3600000 for i in range(24)],
+                    'open': opens,
+                    'high': highs,
+                    'low': lows,
+                    'close': closes,
+                    'volume': volumes,
+                    'current_price': current_price
+                }
             
         except Exception as e:
-            self.log(f"Error fetching 12h data for {symbol}: {str(e)}")
-            return self._get_fallback_ohlcv(symbol)
+            self.log(f"CoinGecko fallback failed for {symbol}: {str(e)}")
+        
+        # Final fallback to mock data
+        return self._get_fallback_ohlcv(symbol)
     
     def _get_fallback_ohlcv(self, symbol: str) -> Dict:
-        """Generate fallback OHLCV data when API fails"""
-        base_price = 50000 if 'BTC' in symbol else 3000
-        price_variation = (time.time() % 1000) / 100
+        """Generate fallback OHLCV data when all APIs fail"""
+        # Use more realistic base prices based on symbol
+        base_prices = {
+            'BTCUSDT': 65000,
+            'ETHUSDT': 3500,
+            'BNBUSDT': 600,
+            'SOLUSDT': 180,
+            'ADAUSDT': 0.45,
+            'XRPUSDT': 0.55,
+            'DOGEUSDT': 0.08,
+            'TRXUSDT': 0.11,
+            'LINKUSDT': 14,
+            'DOTUSDT': 7
+        }
         
-        # Generate 12 hours of synthetic data
-        prices = [base_price + price_variation * (i * 0.1 + np.random.normal(0, 0.02)) for i in range(12)]
+        base_price = base_prices.get(symbol, 100)
+        price_variation = (time.time() % 1000) / 1000
+        
+        self.log(f"Using mock data for {symbol} (APIs unavailable)")
+        
+        # Generate 24 hours of synthetic data
+        prices = []
+        for i in range(24):
+            # Add some realistic price movement
+            change = np.random.normal(0, 0.02)  # 2% standard deviation
+            price = base_price * (1 + change + price_variation * 0.01)
+            prices.append(price)
         
         return {
-            'timestamps': [int(time.time() * 1000) - (12-i) * 3600000 for i in range(12)],
+            'timestamps': [int(time.time() * 1000) - (23-i) * 3600000 for i in range(24)],
             'open': prices,
             'high': [p * (1 + abs(np.random.normal(0, 0.01))) for p in prices],
             'low': [p * (1 - abs(np.random.normal(0, 0.01))) for p in prices],
             'close': prices,
-            'volume': [1000000 + np.random.normal(0, 100000) for _ in range(12)],
+            'volume': [1000000 + np.random.normal(0, 100000) for _ in range(24)],
             'current_price': prices[-1]
         }
     
@@ -164,13 +333,13 @@ class MarketDataFetcher:
         if not closes or len(closes) < 2:
             return self._get_default_features()
         
-        # Basic price features
+        # Basic price features using 24h data
         price_1h = (closes[-1] / closes[-2] - 1) if len(closes) >= 2 else 0
-        price_24h = (closes[-1] / closes[0] - 1) if len(closes) >= 12 else price_1h * 24
-        ret_log_24h = np.log(closes[-1] / closes[0]) if len(closes) >= 12 and closes[0] > 0 else 0
+        price_24h = (closes[-1] / closes[0] - 1) if len(closes) >= 24 else (closes[-1] / closes[0] - 1) if len(closes) > 0 else 0
+        ret_log_24h = np.log(closes[-1] / closes[0]) if len(closes) >= 24 and closes[0] > 0 else 0
         
-        # Volatility
-        vol_24h = TechnicalIndicators.volatility(closes, 12)
+        # Volatility using 24h data
+        vol_24h = TechnicalIndicators.volatility(closes, min(24, len(closes)))
         
         # Technical indicators
         rsi_14 = TechnicalIndicators.rsi(closes, 14)
@@ -258,18 +427,28 @@ class MarketDataFetcher:
                     # Get symbol info
                     symbol_info = symbol.replace('USDT', '')
                     
+                    # Calculate 24h price changes in absolute values (no % symbols)
+                    current_price = ohlcv['current_price']
+                    price_change_1h = current_price * features.get('pct_1h', 0)
+                    price_change_24h = current_price * features.get('pct_24h', 0)
+                    
                     enhanced_data.append({
                         'symbol': symbol_info,
                         'full_symbol': symbol,
-                        'current_price': ohlcv['current_price'],
-                        'price_data_last_12h': {
+                        'current_price': current_price,
+                        'price_change_absolute': {
+                            '1h': round(price_change_1h, 2),
+                            '24h': round(price_change_24h, 2)
+                        },
+                        'price_data_last_24h': {
                             'open': ohlcv['open'][0] if ohlcv['open'] else 0,
                             'high': max(ohlcv['high']) if ohlcv['high'] else 0,
                             'low': min(ohlcv['low']) if ohlcv['low'] else 0,
                             'close': ohlcv['close'][-1] if ohlcv['close'] else 0
                         },
                         'features': features,
-                        'timestamp': datetime.now().isoformat()
+                        'timestamp': datetime.now().isoformat(),
+                        'data_source': 'real_time' if 'real-time' in str(ohlcv) else 'fallback'
                     })
                     
                 except Exception as e:

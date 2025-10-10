@@ -39,12 +39,15 @@
             position: fixed;
             top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
             width: 100%;
-            height: 100%;
-            height: 100vh;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
             height: 100dvh;
             z-index: 0;
             pointer-events: none;
+            touch-action: none;
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%); /* Fundo único aqui */
         }
 
@@ -442,14 +445,35 @@
             /* iOS Safari specific */
             html, body {
                 min-height: -webkit-fill-available;
+                height: 100%;
+            }
+            
+            #particles-canvas {
+                min-height: -webkit-fill-available;
+                height: 100%;
             }
         }
         
-        /* Removido pseudo-elementos duplicados - apenas canvas com fundo */
-        
         /* Cobertura extra para dispositivos muito pequenos */
         @media (max-width: 480px) {
-            /* Removido pseudo-elementos duplicados */
+            #particles-canvas {
+                position: fixed;
+                inset: 0;
+                width: 100vw !important;
+                min-height: 100vh;
+                min-height: 100dvh;
+                min-height: -webkit-fill-available;
+            }
+        }
+        
+        /* Landscape mode mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            #particles-canvas {
+                min-height: 100vh;
+                min-height: 100dvh;
+                height: 100vh;
+                height: 100dvh;
+            }
         }
     </style>
 </head>
@@ -511,7 +535,7 @@
             const errorSection = document.getElementById('error');
             const errorMessage = document.getElementById('errorMessage');
 
-            // Enhanced dark background maintenance - CORRIGIDO
+            // Enhanced dark background maintenance - MOBILE OPTIMIZED
             function ensureDarkBackground() {
                 // Ensure transparent backgrounds so canvas provides the visual background
                 document.documentElement.style.background = 'transparent';
@@ -523,37 +547,78 @@
                     container.style.background = 'transparent';
                 });
                 
+                // Get real viewport height (especially important for mobile)
+                const getViewportHeight = () => {
+                    // Use visualViewport API if available (iOS Safari)
+                    if (window.visualViewport) {
+                        return window.visualViewport.height;
+                    }
+                    // Fallback to window.innerHeight
+                    return window.innerHeight;
+                };
+                
                 // Additional mobile-specific fixes
                 if (window.innerWidth <= 768) {
+                    const viewportHeight = getViewportHeight();
+                    
                     // Force full height coverage
                     document.documentElement.style.minHeight = '100vh';
-                    document.documentElement.style.minHeight = '100dvh';
-                    document.body.style.minHeight = '100vh';
-                    document.body.style.minHeight = '100dvh';
+                    document.documentElement.style.minHeight = '-webkit-fill-available';
+                    document.documentElement.style.height = '100%';
                     
-                    // Ensure particles canvas covers full screen - CORRIGIDO
+                    document.body.style.minHeight = '100vh';
+                    document.body.style.minHeight = '-webkit-fill-available';
+                    document.body.style.height = '100%';
+                    
+                    // Ensure particles canvas covers full screen with multiple strategies
                     const particlesCanvas = document.getElementById('particles-canvas');
                     if (particlesCanvas) {
-                        particlesCanvas.style.height = '100vh';
-                        particlesCanvas.style.height = '100dvh';
-                        // NÃO forçar opacity ou visibility - deixar o sistema natural
+                        // Use inset for maximum coverage
+                        particlesCanvas.style.position = 'fixed';
+                        particlesCanvas.style.top = '0';
+                        particlesCanvas.style.left = '0';
+                        particlesCanvas.style.right = '0';
+                        particlesCanvas.style.bottom = '0';
+                        particlesCanvas.style.width = '100%';
+                        particlesCanvas.style.minHeight = '100vh';
+                        particlesCanvas.style.minHeight = '-webkit-fill-available';
+                        particlesCanvas.style.height = `${viewportHeight}px`;
+                        
+                        // Set canvas dimensions programmatically
+                        if (particlesCanvas.width !== window.innerWidth || 
+                            particlesCanvas.style.height !== `${viewportHeight}px`) {
+                            particlesCanvas.style.height = `${viewportHeight}px`;
+                        }
                     }
-                    
-                    // Removido cobertura extra duplicada
                 }
             }
 
             // Call on load and after results display
             ensureDarkBackground();
             
-            // Additional mobile viewport handling
+            // Additional mobile viewport handling with iOS support
             function handleMobileViewport() {
                 if (window.innerWidth <= 768) {
+                    const getViewportHeight = () => {
+                        if (window.visualViewport) {
+                            return window.visualViewport.height;
+                        }
+                        return window.innerHeight;
+                    };
+                    
+                    const viewportHeight = getViewportHeight();
+                    
                     // Force full coverage
                     document.documentElement.style.height = '100%';
                     document.body.style.height = '100%';
                     
-                    // Prevent any white space
+                    // Update canvas height to match real viewport
+                    const particlesCanvas = document.getElementById('particles-canvas');
+                    if (particlesCanvas) {
+                        particlesCanvas.style.height = `${viewportHeight}px`;
+                    }
+                    
+                    // Prevent any white space temporarily
                     document.body.style.overflow = 'hidden';
                     document.documentElement.style.overflow = 'hidden';
                     
@@ -562,8 +627,6 @@
                         document.body.style.overflow = '';
                         document.documentElement.style.overflow = '';
                     }, 100);
-                    
-                    // Removido cobertura extra duplicada
                 }
             }
 
@@ -671,15 +734,12 @@
                 const signalTypeClass = result.type === 'LONG' ? 'signal-long' : 'signal-short';
                 const emoji = result.type === 'LONG' ? '🔼' : '🔽';
                 
-                                 // Add price and variation information if available
-                 const priceInfo = result.current_price ? `
-                     <div style="margin-bottom: 1rem; font-size: 0.9rem; color: #a0a0a0;">
-                         <span style="color: #ffffff; font-weight: 600;">$${Math.round(result.current_price).toLocaleString('en-US')}</span>
-                         <span style="margin-left: 1rem; padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: 600; ${result.price_change_24h >= 0 ? 'background: rgba(0, 255, 157, 0.2); color: #00ff9d;' : 'background: rgba(255, 82, 82, 0.2); color: #ff5252;'}">
-                             ${result.price_change_24h >= 0 ? '+' : ''}${result.price_change_24h ? result.price_change_24h.toFixed(2) : '0.00'}%
-                         </span>
-                     </div>
-                 ` : '';
+                // Add price information only (no 24h percentage)
+                const priceInfo = result.current_price ? `
+                    <div style="margin-bottom: 1rem; font-size: 0.9rem; color: #a0a0a0;">
+                        <span style="color: #ffffff; font-weight: 600;">$${Math.round(result.current_price).toLocaleString('en-US')}</span>
+                    </div>
+                ` : '';
                 
                 // Add confidence bar if available
                 const confidenceBar = result.score ? `
@@ -753,6 +813,22 @@
                 ensureDarkBackground();
                 handleMobileViewport();
             });
+            
+            // Handle orientation changes
+            window.addEventListener('orientationchange', function() {
+                setTimeout(() => {
+                    ensureDarkBackground();
+                    handleMobileViewport();
+                }, 200);
+            });
+            
+            // Visual Viewport API for iOS Safari
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', function() {
+                    ensureDarkBackground();
+                    handleMobileViewport();
+                });
+            }
             
             // Additional mobile-specific event listeners
             if ('ontouchstart' in window) {
@@ -829,10 +905,32 @@
             
             const rgb = hexToRgb(color);
             
-            // Configurar canvas
+            // Configurar canvas com suporte mobile completo
             function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+                // Get real viewport dimensions (important for mobile)
+                const getViewportDimensions = () => {
+                    if (window.visualViewport) {
+                        return {
+                            width: window.visualViewport.width,
+                            height: window.visualViewport.height
+                        };
+                    }
+                    return {
+                        width: window.innerWidth,
+                        height: window.innerHeight
+                    };
+                };
+                
+                const viewport = getViewportDimensions();
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+                
+                // Also update canvas style to ensure visual coverage
+                canvas.style.width = '100%';
+                canvas.style.height = `${viewport.height}px`;
+                canvas.style.minHeight = '100vh';
+                canvas.style.minHeight = '-webkit-fill-available';
+                
                 console.log('📐 Canvas redimensionado para:', canvas.width, 'x', canvas.height);
             }
             
@@ -956,6 +1054,31 @@
                 resizeCanvas();
                 createParticles();
             });
+            
+            // Listener para mudança de orientação (mobile)
+            window.addEventListener('orientationchange', function() {
+                setTimeout(() => {
+                    resizeCanvas();
+                    createParticles();
+                    ensureDarkBackground();
+                }, 100);
+            });
+            
+            // Listener para visualViewport changes (iOS Safari)
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', function() {
+                    resizeCanvas();
+                    ensureDarkBackground();
+                });
+                
+                window.visualViewport.addEventListener('scroll', function() {
+                    // Ensure canvas stays in place during scroll
+                    const particlesCanvas = document.getElementById('particles-canvas');
+                    if (particlesCanvas) {
+                        particlesCanvas.style.height = `${window.visualViewport.height}px`;
+                    }
+                });
+            }
             
             // Verificação adicional após 2 segundos
             setTimeout(() => {

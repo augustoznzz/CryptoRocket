@@ -534,9 +534,6 @@
                 const emoji = result.type === 'LONG' ? '🔼' : '🔽';
                 
                 const refPrice = (typeof result.as_of_price === 'number') ? result.as_of_price : result.current_price;
-                const refChange = (typeof result.as_of_price_change_24h === 'number') ? result.as_of_price_change_24h : result.price_change_24h;
-                const priceChangeClass = refChange >= 0 ? 'positive' : 'negative';
-                const priceChangeSymbol = refChange >= 0 ? '+' : '';
                 
                 const confidencePercentage = Math.round(result.score * 100);
                 
@@ -548,9 +545,6 @@
                     
                     <div class="price-info">
                         <span class="current-price">$${refPrice.toFixed(4)} <span style="color:#a0a0a0;font-weight:400">(3 meses atrás)</span></span>
-                        <span class="price-change ${priceChangeClass}">
-                            ${priceChangeSymbol}${refChange.toFixed(2)}%
-                        </span>
                     </div>
                     
                     <div class="potential-gain">

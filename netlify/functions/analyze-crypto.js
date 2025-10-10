@@ -342,7 +342,7 @@ function tryCoinGecko() {
             name: coin.name,
             current_price: coin.current_price,
             market_cap: coin.market_cap,
-            price_change_24h: coin.price_change_24h,
+            // Do not return 24h percentage change to frontend
             price_change_percentage_24h: coin.price_change_percentage_24h,
             volume_24h: coin.total_volume
           }));
@@ -398,7 +398,7 @@ function tryCoinCap() {
             name: coin.name,
             current_price: parseFloat(coin.priceUsd),
             market_cap: parseFloat(coin.marketCapUsd),
-            price_change_24h: parseFloat(coin.changePercent24Hr),
+            // Do not return 24h percentage change to frontend
             price_change_percentage_24h: parseFloat(coin.changePercent24Hr),
             volume_24h: parseFloat(coin.volumeUsd24Hr)
           }));
@@ -425,15 +425,15 @@ function generateSimpleAnalysis(coins) {
   
   for (const coin of coins) {
     try {
-          // Basic analysis based on available data
-    const analysis = analyzeCoin(coin);
+      // Basic analysis based on available data
+      const analysis = analyzeCoin(coin);
       
-              if (analysis.score > 0.2) { // Low score to include more results
+      if (analysis.score > 0.2) { // Low score to include more results
         results.push({
           symbol: coin.symbol,
           name: coin.name,
           current_price: coin.current_price,
-          price_change_24h: coin.price_change_percentage_24h,
+          // Do NOT return any 24h percentage change to the frontend
           type: analysis.type,
           potential_gain: analysis.potentialGain,
           signal: analysis.description,
@@ -616,7 +616,7 @@ async function enrichWithHistorical(results) {
         ...r,
         as_of_date: asOf.toISOString().split('T')[0],
         as_of_price: asOfPrice != null ? Number(asOfPrice) : r.current_price,
-        as_of_price_change_24h: Number(asOfChangePct),
+        // Do NOT return 24h change percentage
         historical: { months: series }
       };
     } catch (e) {
@@ -625,7 +625,6 @@ async function enrichWithHistorical(results) {
         ...r,
         as_of_date: asOf.toISOString().split('T')[0],
         as_of_price: r.current_price,
-        as_of_price_change_24h: 0,
         historical: null,
         historical_error: e.message
       };
@@ -644,67 +643,46 @@ async function enrichWithHistorical(results) {
 
 // Analisar uma criptomoeda individual
 function analyzeCoin(coin) {
-  let score = 0.5; // Score base
+  // Base score
+  let score = 0.4;
   let type = 'NEUTRAL';
-  let potentialGain = 10;
-  
-  // Analysis based on price variation
-  if (coin.price_change_percentage_24h > 3) {
-    score += 0.2; // Uptrend
-    type = 'LONG';
-  } else if (coin.price_change_percentage_24h < -3) {
-    score += 0.15; // Opportunity to short at high
-    type = 'SHORT';
-  }
-  
-  // Analysis based on volume
-  if (coin.volume_24h > 1000000000) { // > 1B
-    score += 0.2; // Very high volume
-  } else if (coin.volume_24h > 100000000) { // > 100M
-    score += 0.15; // High volume
-  } else if (coin.volume_24h > 10000000) { // > 10M
-    score += 0.1; // Medium volume
-  }
-  
-  // Analysis based on market cap
-  if (coin.market_cap > 10000000000) { // > 10B
-    score += 0.1; // Established coin
-  }
-  
-  // Normalize score
+
+  // Momentum component from absolute 24h change (but we won't return it)
+  const pct = Number(coin.price_change_percentage_24h || 0);
+  const momentum = Math.min(Math.abs(pct) / 12, 1); // up to ~1 for |12%|
+
+  // Volume factor using log scale (normalize typical 10M..50B)
+  const vol = Math.max(0, Math.log10((coin.volume_24h || 1)) - 7); // ~0..3
+  const volNorm = Math.min(vol / 3, 1);
+
+  // Market cap factor: smaller caps → higher potential (more volatility)
+  const capLog = Math.log10((coin.market_cap || 1));
+  const capNorm = Math.max(0, Math.min(1, (12 - capLog) / 4)); // 0 (mega caps) .. 1 (small caps)
+
+  // Aggregate score
+  score += 0.45 * momentum + 0.35 * volNorm + 0.20 * capNorm;
   score = Math.max(0, Math.min(1, score));
-  
-  // Calculate potential gain
-  potentialGain = Math.round((score * 20 + 5) * 10) / 10; // 5% to 25%
-  
-  // Determine type based on potential gain and score
-  if (potentialGain > 15 && score > 0.6) {
-    type = 'LONG'; // High potential = Buy
-  } else if (potentialGain < 10 || score < 0.4) {
-    type = 'SHORT'; // Low potential = Sell
-  }
-  
-  // Generate description
+
+  // Potential from score (per-coin, 5%..25%)
+  const potentialGain = Math.round((5 + 20 * score) * 10) / 10;
+
+  // Directional bias for type
+  if (pct > 0 && score >= 0.55) type = 'LONG';
+  if (pct < 0 && score >= 0.55) type = 'SHORT';
+  if (score < 0.4) type = 'SHORT';
+  if (score > 0.75) type = 'LONG';
+
   const description = generateDescription(coin, score);
-  
-  return {
-    type,
-    score,
-    potentialGain,
-    description
-  };
+
+  return { type, score, potentialGain, description };
 }
 
 // Generate analysis description
 function generateDescription(coin, score) {
   let description = `Technical Analysis ${coin.symbol}:\n`;
   
-  // Trend based on 24h variation
-  if (coin.price_change_percentage_24h > 0) {
-    description += `• Trend: Bullish (+${coin.price_change_percentage_24h.toFixed(2)}% 24h)\n`;
-  } else {
-    description += `• Trend: Bearish (${coin.price_change_percentage_24h.toFixed(2)}% 24h)\n`;
-  }
+  // Trend based on 24h variation (omit numeric percentage)
+  description += `• Trend: ${coin.price_change_percentage_24h > 0 ? 'Bullish' : coin.price_change_percentage_24h < 0 ? 'Bearish' : 'Neutral'} (24h)\n`;
   
   // Current price - format without decimals and with thousand separators
   const formattedPrice = Math.round(coin.current_price).toLocaleString('en-US');
