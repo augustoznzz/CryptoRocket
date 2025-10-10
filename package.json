@@ -5,7 +5,8 @@
   "scripts": {
     "build": "echo 'Build completed - static site ready for Netlify'",
     "test": "echo 'No tests required for static site'",
-    "start": "echo 'Open index.html in your browser to preview'"
+    "start": "echo 'Open index.html in your browser to preview'",
+    "dev": "netlify dev --port 3003"
   },
   "keywords": [
     "crypto",
@@ -23,6 +24,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/yourusername/CryptoRocket.git"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.34.1"
   }
 }
 
