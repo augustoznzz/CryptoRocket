@@ -660,9 +660,9 @@ function analyzeCoin(coin) {
     + 0.10 * capNorm;
   score = Math.max(0, Math.min(1, score));
 
-  // Adaptive potential (moderate range ~4–35% based on volatility/turnover/cap)
+  // Adaptive potential (conservative range ~3–20% based on volatility/turnover/cap)
   const volExp = Math.min(1, momentumAbs * 0.7 + Math.min(turnover * 3, 1) * 0.3);
-  const potentialGain = Math.round((4 + 32 * (0.55 * volExp + 0.45 * capNorm)) * 10) / 10;
+  const potentialGain = Math.round((3 + 17 * (0.55 * volExp + 0.45 * capNorm)) * 10) / 10;
 
   // Direction/type using sign and confidence
   let type = 'NEUTRAL';
