@@ -175,13 +175,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const signalTypeClass = result.type === 'LONG' ? 'signal-long' : 'signal-short';
         const emoji = result.type === 'LONG' ? '🔼' : '🔽';
         
-        // Adicionar informações de preço e variação se disponíveis
+        // Adicionar informações de preço se disponíveis
         const priceInfo = result.current_price ? `
             <div style="margin-bottom: 1rem; font-size: 0.9rem; color: #a0a0a0;">
                 <span style="color: #ffffff; font-weight: 600;">$${result.current_price.toFixed(4)}</span>
-                <span style="margin-left: 1rem; padding: 0.3rem 0.6rem; border-radius: 6px; font-weight: 600; ${result.price_change_24h >= 0 ? 'background: rgba(0, 255, 157, 0.2); color: #00ff9d;' : 'background: rgba(255, 82, 82, 0.2); color: #ff5252;'}">
-                    ${result.price_change_24h >= 0 ? '+' : ''}${result.price_change_24h ? result.price_change_24h.toFixed(2) : '0.00'}%
-                </span>
             </div>
         ` : '';
         
