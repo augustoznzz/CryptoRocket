@@ -36,7 +36,7 @@ html {
     height: 100%;
     height: 100vh;
     height: 100dvh;
-    z-index: -1;
+    z-index: 0;
     pointer-events: none;
     background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%); /* Fundo único aqui */
 }
@@ -314,7 +314,7 @@ footer {
 /* Responsive Design */
 @media (max-width: 768px) {
     html, body {
-        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+        background: transparent !important;
         overflow-x: hidden;
         min-height: 100vh;
         min-height: 100dvh;
@@ -366,7 +366,7 @@ footer {
 /* Mobile-specific fixes */
 @media (max-width: 480px) {
     html, body {
-        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+        background: transparent !important;
         min-height: 100vh;
         min-height: 100dvh;
         height: 100%;

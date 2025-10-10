@@ -35,17 +35,19 @@ class AdvancedParticlesSystem {
   }
 
   ensureDarkBackground() {
-    // Force dark background on html and body
+    // Keep html and body transparent so the canvas carries the background
     if (document.documentElement) {
-      document.documentElement.style.background = 'linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%)';
+      document.documentElement.style.background = 'transparent';
     }
     if (document.body) {
-      document.body.style.background = 'linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%)';
+      document.body.style.background = 'transparent';
     }
     
     // Ensure canvas doesn't interfere with background
     if (this.canvas) {
-      this.canvas.style.background = 'transparent';
+      // The gradient should live on the canvas to appear as one visual plane
+      this.canvas.style.background = 'linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%)';
+      this.canvas.style.zIndex = '0';
     }
     
     // Force full height coverage for mobile
@@ -112,7 +114,8 @@ class AdvancedParticlesSystem {
     this.canvas.style.height = `${this.canvasSize.h}px`;
     this.canvas.style.height = `${this.canvasSize.h}px`;
     this.canvas.style.height = `${this.canvasSize.h}dvh`;
-    this.canvas.style.background = 'transparent';
+    // Maintain gradient background on the canvas layer
+    this.canvas.style.background = 'linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%)';
     this.ctx.scale(this.dpr, this.dpr);
 
     // Clear existing particles and create new ones

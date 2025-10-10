@@ -1,5 +1,19 @@
-# Dependências básicas para CryptoRocket
-# Apenas os 3 indicadores: price_change_24h, volume_24h, market_cap
+# Enhanced dependencies for CryptoRocket ML System
+# Market data, technical indicators, ML training, and performance evaluation
 
+# Core dependencies
 pycoingecko==3.2.0
 requests==2.32.4
+numpy>=1.24.0
+pandas>=2.0.0
+python-dateutil>=2.8.0
+
+# Machine Learning
+scikit-learn>=1.3.0
+
+# Visualization and Analysis
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Optional: For enhanced performance
+scipy>=1.10.0
