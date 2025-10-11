@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0c0c0c">
+    <meta name="theme-color" content="#141414">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     <!-- CRITICAL: Force dark background BEFORE any rendering -->
     <style>
-        html,body{background:#0c0c0c!important;margin:0!important;padding:0!important;width:100%!important;height:100%!important}
+        html,body{background:#141414!important;margin:0!important;padding:0!important;width:100%!important;height:100%!important}
         @media(max-width:768px){
             html,body{position:fixed!important;top:0!important;left:0!important;right:0!important;bottom:0!important;overflow:hidden!important;width:100vw!important;height:100vh!important;height:100dvh!important}
         }
@@ -26,19 +26,19 @@
 
         /* ULTRA PROTECTION - Force dark background on root */
         :root {
-            background-color: #0c0c0c !important;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+            background-color: #141414 !important;
+            background: #141414 !important;
         }
 
         /* Prevent any white space from appearing */
         *:not(.trade-card):not(.signal-type):not(.search-button) {
-            border-color: #0c0c0c !important;
+            border-color: #141414 !important;
         }
 
         /* Ensure full screen coverage - RADICAL APPROACH */
         html {
-            background-color: #0c0c0c !important; /* Solid fallback */
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+            background-color: #141414 !important; /* Solid fallback */
+            background: #141414 !important;
             min-height: 100vh;
             min-height: 100dvh;
             min-height: -webkit-fill-available;
@@ -66,16 +66,16 @@
             bottom: -100px;
             width: calc(100% + 200px);
             height: calc(100% + 200px);
-            background-color: #0c0c0c;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            background-color: #141414;
+            background: #141414;
             z-index: -1000;
             pointer-events: none;
         }
 
         html, body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background-color: #0c0c0c !important; /* Solid fallback */
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+            background-color: #141414 !important; /* Solid fallback */
+            background: #141414 !important;
             color: #e0e0e0;
             min-height: 100vh;
             min-height: 100dvh; /* Dynamic viewport height for mobile */
@@ -107,8 +107,8 @@
             bottom: -50px;
             width: calc(100% + 100px);
             height: calc(100% + 100px);
-            background-color: #0c0c0c;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            background-color: #141414;
+            background: #141414;
             z-index: -500;
             pointer-events: none;
         }
@@ -122,8 +122,8 @@
             right: 0;
             height: calc(100% + 400px);
             width: 100%;
-            background-color: #0c0c0c;
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            background-color: #141414;
+            background: #141414;
             z-index: -100;
             pointer-events: none;
         }
@@ -143,8 +143,8 @@
             z-index: 0;
             pointer-events: none;
             touch-action: none;
-            background-color: #0c0c0c; /* Solid fallback */
-            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%); /* Fundo único aqui */
+            background-color: #141414; /* Solid fallback */
+            background: #141414; /* Fundo único aqui */
         }
 
         .container {
@@ -432,8 +432,8 @@
         /* Responsive Design - RADICAL MOBILE FIX */
         @media (max-width: 768px) {
             html {
-                background-color: #0c0c0c !important;
-                background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+                background-color: #141414 !important;
+                background: #141414 !important;
                 /* REMOVIDO: background-attachment: fixed - não funciona em mobile */
                 overflow: hidden !important;
                 overflow-y: hidden !important;
@@ -450,8 +450,8 @@
             
             /* TÉCNICA RADICAL: Body fixo para prevenir bounce scroll branco */
             body {
-                background-color: #0c0c0c !important;
-                background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+                background-color: #141414 !important;
+                background: #141414 !important;
                 /* REMOVIDO: background-attachment: fixed - não funciona em mobile */
                 position: fixed !important; /* KEY FIX */
                 top: 0 !important;
@@ -497,8 +497,8 @@
             
             /* Force dark on ALL structural elements in mobile */
             html, body, #absolute-background {
-                background-color: #0c0c0c !important;
-                background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+                background-color: #141414 !important;
+                background: #141414 !important;
             }
             
             /* Prevent any margin/padding that could expose white */
@@ -557,8 +557,8 @@
         /* Mobile-specific fixes - Small devices */
         @media (max-width: 480px) {
             html {
-                background-color: #0c0c0c !important;
-                background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+                background-color: #141414 !important;
+                background: #141414 !important;
                 /* REMOVIDO: background-attachment: fixed */
                 min-height: 100vh;
                 min-height: 100dvh;
@@ -567,8 +567,8 @@
             }
             
             body {
-                background-color: #0c0c0c !important;
-                background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+                background-color: #141414 !important;
+                background: #141414 !important;
                 /* REMOVIDO: background-attachment: fixed */
                 /* Body já está fixo no media query 768px */
                 min-height: 100vh;
@@ -602,7 +602,7 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #1a1a1a;
+            background: #141414;
         }
 
         ::-webkit-scrollbar-thumb {
@@ -667,7 +667,7 @@
 </head>
 <body>
     <!-- CAMADA DE PROTEÇÃO ABSOLUTA - DIV FUNDO -->
-    <div id="absolute-background" style="position: fixed; top: -200px; left: -200px; right: -200px; bottom: -200px; width: calc(100% + 400px); height: calc(100% + 400px); background-color: #0c0c0c; background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%); z-index: -2000; pointer-events: none;"></div>
+    <div id="absolute-background" style="position: fixed; top: -200px; left: -200px; right: -200px; bottom: -200px; width: calc(100% + 400px); height: calc(100% + 400px); background-color: #141414; background: #141414; z-index: -2000; pointer-events: none;"></div>
     
     <!-- Canvas de Partículas - SISTEMA FUNCIONAL -->
     <canvas id="particles-canvas"></canvas>
@@ -720,8 +720,8 @@
         if(isMobile){
             var applyStyles=function(){
                 var vh=window.innerHeight;
-                document.documentElement.style.cssText='background:#0c0c0c!important;position:fixed!important;top:0;left:0;right:0;bottom:0;overflow:hidden!important;width:100vw!important;height:'+vh+'px!important;margin:0!important;padding:0!important';
-                document.body.style.cssText='background:#0c0c0c!important;position:fixed!important;top:0;left:0;right:0;bottom:0;overflow:hidden!important;width:100vw!important;height:'+vh+'px!important;margin:0!important;padding:0!important';
+                document.documentElement.style.cssText='background:#141414!important;position:fixed!important;top:0;left:0;right:0;bottom:0;overflow:hidden!important;width:100vw!important;height:'+vh+'px!important;margin:0!important;padding:0!important';
+                document.body.style.cssText='background:#141414!important;position:fixed!important;top:0;left:0;right:0;bottom:0;overflow:hidden!important;width:100vw!important;height:'+vh+'px!important;margin:0!important;padding:0!important';
                 var c=document.querySelector('.container');
                 if(c){
                     c.style.cssText+='position:absolute!important;top:0;left:0;right:0;bottom:0;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important';
@@ -767,8 +767,8 @@
                 var vh = window.innerHeight;
                 
                 // Base styles for all
-                document.documentElement.style.cssText += 'background:#0c0c0c!important;margin:0!important;padding:0!important;';
-                document.body.style.cssText += 'background:#0c0c0c!important;margin:0!important;padding:0!important;';
+                document.documentElement.style.cssText += 'background:#141414!important;margin:0!important;padding:0!important;';
+                document.body.style.cssText += 'background:#141414!important;margin:0!important;padding:0!important;';
                 
                 // Mobile specific
                 if (isMobile) {
