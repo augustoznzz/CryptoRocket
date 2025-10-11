@@ -2,7 +2,7 @@
 
 ## 📊 Resumo do Projeto
 
-O **Crypto Rocket** é uma aplicação web completa que realiza análise técnica das **16 principais criptomoedas** do mercado, fornecendo sinais de trading baseados em indicadores técnicos profissionais.
+O **Crypto Rocket** é uma aplicação web completa que realiza análise técnica das **12 principais criptomoedas** do mercado, fornecendo sinais de trading baseados em indicadores técnicos profissionais.
 
 ### 🎯 Criptomoedas Analisadas
 
@@ -11,10 +11,8 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 - **Bitcoin (BTC)** - A primeira e mais conhecida criptomoeda
 - **Ethereum (ETH)** - Plataforma de contratos inteligentes
 - **Ripple (XRP)** - Solução de pagamentos internacionais
-- **Tether (USDT)** - Stablecoin mais popular
 - **Binance Coin (BNB)** - Token da maior exchange
 - **Solana (SOL)** - Blockchain de alta performance
-- **USD Coin (USDC)** - Stablecoin regulamentada
 - **Dogecoin (DOGE)** - Criptomoeda baseada em meme
 - **TRON (TRX)** - Plataforma de entretenimento digital
 - **Cardano (ADA)** - Blockchain de terceira geração
@@ -22,8 +20,6 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 - **Sui (SUI)** - Layer 1 de nova geração
 - **Stellar (XLM)** - Rede de pagamentos globais
 - **Uniswap (UNI)** - Protocolo de DEX líder
-- **Polkadot (DOT)** - Plataforma de interoperabilidade
-- **Dai (DAI)** - Stablecoin descentralizada
 
 ## ⚠️ **IMPORTANTE: Valores Ilustrativos**
 
@@ -38,18 +34,21 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 ## 🚀 Funcionalidades Implementadas
 
 ### ✨ Interface Moderna
+
 - **Design responsivo** para todos os dispositivos
 - **Tema escuro** com gradientes elegantes
 - **Partículas animadas** em verde claro suave (#90EE90)
 - **Animações fluidas** e transições suaves
 
 ### 📈 Análise Técnica
-- **16 criptomoedas** analisadas simultaneamente
+
+- **12 criptomoedas** analisadas simultaneamente
 - **Indicadores múltiplos** para cada moeda
 - **Sinais de trading** com confiança percentual
 - **Ranking automático** das melhores oportunidades
 
 ### 🎨 Sistema de Partículas
+
 - **150 partículas** em movimento suave
 - **Cor verde claro** com bordas sutilmente brilhantes
 - **Interação com mouse** através de magnetismo
@@ -59,17 +58,20 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 ## 🛠️ Tecnologias Utilizadas
 
 ### Frontend
+
 - **HTML5** - Estrutura semântica
 - **CSS3** - Estilização moderna com gradientes e animações
 - **JavaScript ES6+** - Lógica de negócio e interatividade
 - **Canvas API** - Sistema de partículas animadas
 
 ### Backend
+
 - **Python 3.9+** - Lógica de análise técnica
 - **Flask** - Framework web
 - **Netlify Functions** - Serverless para produção
 
 ### Análise Técnica
+
 - **Indicadores Básicos: price_change_24h, volume_24h, market_cap**
 - **Médias móveis simples e exponencial**
 - **Análise de volume e volatilidade**
@@ -85,18 +87,22 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 ## 🔧 Problemas Resolvidos
 
 ### 1. Fundo Branco em Dispositivos Móveis
+
 - **Solução**: Implementação de fundo único no canvas com partículas
 - **Resultado**: Fundo escuro consistente em todos os dispositivos
 
 ### 2. Sistema de Partículas Não Visível
+
 - **Solução**: Implementação de sistema de partículas no estilo solicitado
 - **Resultado**: Partículas verdes claras com bordas sutilmente brilhantes
 
 ### 3. Fundos Duplicados
+
 - **Solução**: Remoção de pseudo-elementos e fundos duplicados
 - **Resultado**: Apenas um fundo com partículas visíveis
 
 ### 4. Z-index Conflicts
+
 - **Solução**: Correção de camadas CSS para visibilidade das partículas
 - **Resultado**: Partículas visíveis sobre o fundo escuro
 
@@ -120,6 +126,7 @@ Signal: Price change + Volume + Market cap analysis
 ## 🌐 Deploy
 
 ### Netlify (Recomendado)
+
 - **Deploy automático** via GitHub
 - **Serverless functions** para análise
 - **CDN global** para performance

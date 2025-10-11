@@ -1,4 +1,4 @@
-// Crypto Trading Analyzer - Frontend JavaScript (Análise das 16 Criptomoedas Selecionadas)
+// Crypto Trading Analyzer - Frontend JavaScript (Análise das 12 Criptomoedas Selecionadas)
 
 document.addEventListener('DOMContentLoaded', function() {
     const searchBtn = document.getElementById('searchBtn');

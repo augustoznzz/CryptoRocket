@@ -11,10 +11,8 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 - **Bitcoin (BTC)** - A primeira e mais conhecida criptomoeda
 - **Ethereum (ETH)** - Plataforma de contratos inteligentes
 - **Ripple (XRP)** - Solução de pagamentos internacionais
-- **Tether (USDT)** - Stablecoin mais popular
 - **Binance Coin (BNB)** - Token da maior exchange
 - **Solana (SOL)** - Blockchain de alta performance
-- **USD Coin (USDC)** - Stablecoin regulamentada
 - **Dogecoin (DOGE)** - Criptomoeda baseada em meme
 - **TRON (TRX)** - Plataforma de entretenimento digital
 - **Cardano (ADA)** - Blockchain de terceira geração
@@ -22,8 +20,6 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 - **Sui (SUI)** - Layer 1 de nova geração
 - **Stellar (XLM)** - Rede de pagamentos globais
 - **Uniswap (UNI)** - Protocolo de DEX líder
-- **Polkadot (DOT)** - Plataforma de interoperabilidade
-- **Dai (DAI)** - Stablecoin descentralizada
 
 ## ⚠️ **IMPORTANTE: Valores Ilustrativos**
 
@@ -40,6 +36,7 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 ### 1. 🚀 Netlify (Recomendado)
 
 #### **Vantagens:**
+
 - ✅ **Deploy automático** via GitHub
 - ✅ **Serverless functions** para análise
 - ✅ **CDN global** para performance
@@ -57,11 +54,13 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 5. **Clique** em "Deploy site"
 
 #### **Configuração Automática:**
+
 O projeto já inclui `netlify.toml` configurado para funcionar automaticamente.
 
 ### 2. 🔧 Vercel
 
 #### **Vantagens:**
+
 - ✅ **Deploy rápido** e simples
 - ✅ **Edge functions** para performance
 - ✅ **Integração** com GitHub
@@ -79,11 +78,13 @@ O projeto já inclui `netlify.toml` configurado para funcionar automaticamente.
 #### **Para Deploy com Backend Python:**
 
 1. **Instale** as dependências:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 2. **Configure** as variáveis de ambiente:
+
    ```bash
    export FLASK_APP=app.py
    export FLASK_ENV=production
@@ -112,18 +113,21 @@ CryptoRocket/
 ## 🎯 Funcionalidades
 
 ### ✨ Interface Moderna
+
 - **Design responsivo** para todos os dispositivos
 - **Tema escuro** com gradientes elegantes
 - **Partículas animadas** em verde claro suave
 - **Animações fluidas** e transições suaves
 
 ### 📈 Análise Técnica
+
 - **16 criptomoedas** analisadas simultaneamente
 - **Indicadores múltiplos** para cada moeda
 - **Sinais de trading** com confiança percentual
 - **Ranking automático** das melhores oportunidades
 
 ### 🎨 Sistema de Partículas
+
 - **150 partículas** em movimento suave
 - **Cor verde claro** (#90EE90) com bordas sutilmente brilhantes
 - **Interação com mouse** através de magnetismo
@@ -132,6 +136,7 @@ CryptoRocket/
 ## 🔧 Configurações Específicas
 
 ### Netlify Functions (Opcional)
+
 Se quiser usar as funções serverless da Netlify:
 
 1. **Crie** a pasta `netlify/functions/`
@@ -139,6 +144,7 @@ Se quiser usar as funções serverless da Netlify:
 3. **Configure** no `netlify.toml`
 
 ### Domínio Personalizado
+
 Para usar seu próprio domínio:
 
 1. **Configure** DNS apontando para Netlify
@@ -157,23 +163,28 @@ Após o deploy, teste em:
 ## 🚨 Troubleshooting
 
 ### Problema: CSS não carrega
+
 **Solução**: Verifique se o arquivo `index.html` está na raiz do projeto
 
 ### Problema: Partículas não aparecem
+
 **Solução**: Verifique se o JavaScript está sendo executado (console do navegador)
 
 ### Problema: Deploy falha
+
 **Solução**: Verifique se todos os arquivos estão commitados no GitHub
 
 ## 📊 Monitoramento
 
 ### Netlify Analytics
+
 - **Visitas** e **pageviews**
 - **Performance** e **tempo de carregamento**
 - **Dispositivos** e **navegadores**
 - **Países** de origem
 
 ### Logs de Deploy
+
 - **Build status** e **erros**
 - **Tempo** de deploy
 - **Cache** e **otimizações**

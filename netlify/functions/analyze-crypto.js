@@ -3,11 +3,10 @@ const https = require('https');
 // Sistema de rate limiting baseado em IP
 const rateLimitStore = new Map(); // IP -> { lastRequest: timestamp, count: number }
 
-// Lista específica de criptomoedas para análise
+// Lista específica de criptomoedas para análise (12 solicitadas)
 const TARGET_CRYPTOCURRENCIES = [
-  'bitcoin', 'ethereum', 'ripple', 'tether', 'binancecoin', 
-  'solana', 'usd-coin', 'dogecoin', 'tron', 'cardano', 
-  'chainlink', 'sui', 'stellar', 'uniswap', 'polkadot', 'dai'
+  'bitcoin', 'ethereum', 'ripple', 'binancecoin', 'solana',
+  'dogecoin', 'tron', 'cardano', 'chainlink', 'sui', 'stellar', 'uniswap'
 ];
 
 // Função para obter IP real do usuário
@@ -267,16 +266,6 @@ function getFallbackData() {
       volume_24h: 2000000000 + Math.random() * 1000000000 // $2B - $3B
     },
     {
-      id: 'polkadot',
-      symbol: 'DOT',
-      name: 'Polkadot',
-      current_price: 8.5 + Math.random() * 1.5, // $8.5 - $10.0 (mais realista)
-      market_cap: 12000000000 + Math.random() * 5000000000, // $12B - $17B
-      price_change_24h: (Math.random() - 0.5) * 0.8, // ±$0.4 variation
-      price_change_percentage_24h: (Math.random() - 0.5) * 4, // ±2% variation
-      volume_24h: 1500000000 + Math.random() * 800000000 // $1.5B - $2.3B
-    },
-    {
       id: 'chainlink',
       symbol: 'LINK',
       name: 'Chainlink',
@@ -367,7 +356,7 @@ function tryCoinGecko() {
 function tryCoinCap() {
   return new Promise((resolve, reject) => {
     // CoinCap usa IDs diferentes, mapear para os símbolos
-    const symbols = ['bitcoin', 'ethereum', 'ripple', 'binance-coin', 'solana', 'cardano', 'polkadot', 'chainlink'];
+    const symbols = ['bitcoin', 'ethereum', 'ripple', 'binance-coin', 'solana', 'cardano', 'chainlink', 'dogecoin', 'tron', 'stellar', 'uniswap', 'sui'];
     const url = `https://api.coincap.io/v2/assets?ids=${symbols.join(',')}`;
     
     console.log('🔍 Trying CoinCap API...');

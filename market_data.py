@@ -208,7 +208,7 @@ class MarketDataFetcher:
     def _get_coingecko_fallback(self, symbol: str) -> Dict:
         """Get data from CoinGecko as fallback when Binance fails"""
         try:
-            # Map Binance symbols to CoinGecko IDs
+            # Map Binance symbols to CoinGecko IDs (only the 12 specified)
             symbol_map = {
                 'BTCUSDT': 'bitcoin',
                 'ETHUSDT': 'ethereum',
@@ -219,7 +219,9 @@ class MarketDataFetcher:
                 'DOGEUSDT': 'dogecoin',
                 'TRXUSDT': 'tron',
                 'LINKUSDT': 'chainlink',
-                'DOTUSDT': 'polkadot'
+                'SUIUSDT': 'sui',
+                'XLMUSDT': 'stellar',
+                'UNIUSDT': 'uniswap'
             }
             
             coin_id = symbol_map.get(symbol, 'bitcoin')  # Default to Bitcoin
@@ -298,7 +300,9 @@ class MarketDataFetcher:
             'DOGEUSDT': 0.08,
             'TRXUSDT': 0.11,
             'LINKUSDT': 14,
-            'DOTUSDT': 7
+            'SUIUSDT': 1.0,
+            'XLMUSDT': 0.12,
+            'UNIUSDT': 8.0
         }
         
         base_price = base_prices.get(symbol, 100)
@@ -408,11 +412,11 @@ class MarketDataFetcher:
         try:
             self.log("Fetching target cryptocurrencies with 12h data and technical indicators")
             
-            # Target cryptocurrencies
+            # Target cryptocurrencies (restricted to 12 specified)
             target_symbols = [
-                'BTCUSDT', 'ETHUSDT', 'XRPUSDT', 'USDTUSDT', 'BNBUSDT',
-                'SOLUSDT', 'USDCUSDT', 'DOGEUSDT', 'TRXUSDT', 'ADAUSDT',
-                'LINKUSDT', 'SUIUSDT', 'XLMUSDT', 'UNIUSDT', 'DOTUSDT', 'DAIUSDT'
+                'BTCUSDT', 'ETHUSDT', 'XRPUSDT', 'BNBUSDT', 'SOLUSDT',
+                'DOGEUSDT', 'TRXUSDT', 'ADAUSDT', 'LINKUSDT', 'SUIUSDT',
+                'XLMUSDT', 'UNIUSDT'
             ]
             
             enhanced_data = []

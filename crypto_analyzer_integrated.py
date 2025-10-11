@@ -76,7 +76,9 @@ class CryptoAnalyzer:
                 'DOGE': 'dogecoin',
                 'TRX': 'tron',
                 'LINK': 'chainlink',
-                'DOT': 'polkadot'
+                'SUI': 'sui',
+                'XLM': 'stellar',
+                'UNI': 'uniswap'
             }
             
             coin_id = symbol_map.get(symbol.upper(), 'bitcoin')
@@ -457,7 +459,7 @@ class CryptoAnalyzer:
         """Get analysis for top cryptocurrencies"""
         # Top cryptocurrencies by market cap
         top_symbols = [
-            'BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA', 'DOGE', 'TRX', 'LINK', 'DOT'
+            'BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA', 'DOGE', 'TRX', 'LINK', 'SUI', 'XLM', 'UNI'
         ]
         
         # Sample sentiment texts for demonstration

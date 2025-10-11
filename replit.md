@@ -11,10 +11,8 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 - **Bitcoin (BTC)** - A primeira e mais conhecida criptomoeda
 - **Ethereum (ETH)** - Plataforma de contratos inteligentes
 - **Ripple (XRP)** - Solução de pagamentos internacionais
-- **Tether (USDT)** - Stablecoin mais popular
 - **Binance Coin (BNB)** - Token da maior exchange
 - **Solana (SOL)** - Blockchain de alta performance
-- **USD Coin (USDC)** - Stablecoin regulamentada
 - **Dogecoin (DOGE)** - Criptomoeda baseada em meme
 - **TRON (TRX)** - Plataforma de entretenimento digital
 - **Cardano (ADA)** - Blockchain de terceira geração
@@ -22,8 +20,6 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 - **Sui (SUI)** - Layer 1 de nova geração
 - **Stellar (XLM)** - Rede de pagamentos globais
 - **Uniswap (UNI)** - Protocolo de DEX líder
-- **Polkadot (DOT)** - Plataforma de interoperabilidade
-- **Dai (DAI)** - Stablecoin descentralizada
 
 ## ⚠️ **IMPORTANTE: Valores Ilustrativos**
 
@@ -49,22 +45,26 @@ O projeto já está configurado para funcionar automaticamente no Replit com:
 ### 🔧 **Passos para Deploy**
 
 #### **1. Acessar o Replit**
+
 1. **Vá para** [replit.com](https://replit.com)
 2. **Faça login** com sua conta
 3. **Clique** em "Create Repl"
 
 #### **2. Importar o Projeto**
+
 1. **Escolha** "Import from GitHub"
 2. **Cole** a URL do seu repositório
 3. **Selecione** a linguagem Python
 4. **Clique** em "Import from GitHub"
 
 #### **3. Configurar o Ambiente**
+
 1. **Aguarde** a importação completa
 2. **Verifique** se as dependências estão instaladas
 3. **Configure** as variáveis de ambiente se necessário
 
 #### **4. Executar a Aplicação**
+
 1. **Clique** em "Run" no Replit
 2. **Aguarde** a inicialização
 3. **Acesse** a URL fornecida
@@ -88,18 +88,21 @@ CryptoRocket/
 ## 🎯 **Funcionalidades Garantidas**
 
 ### ✨ Interface Moderna
+
 - **Design responsivo** para todos os dispositivos
 - **Tema escuro** com gradientes elegantes
 - **Partículas animadas** em verde claro suave
 - **Animações fluidas** e transições suaves
 
 ### 📈 Análise Técnica
+
 - **16 criptomoedas** analisadas simultaneamente
 - **Indicadores múltiplos** para cada moeda
 - **Sinais de trading** com confiança percentual
 - **Ranking automático** das melhores oportunidades
 
 ### 🎨 Sistema de Partículas
+
 - **150 partículas** em movimento suave
 - **Cor verde claro** (#90EE90) com bordas sutilmente brilhantes
 - **Interação com mouse** através de magnetismo
@@ -108,6 +111,7 @@ CryptoRocket/
 ## 🔧 **Configurações Específicas**
 
 ### **.replit**
+
 ```toml
 language = "python3"
 run = "python start_server.py"
@@ -115,6 +119,7 @@ entrypoint = "start_server.py"
 ```
 
 ### **pyproject.toml**
+
 ```toml
 [project]
 name = "crypto-trading-analyzer"
@@ -130,6 +135,7 @@ dependencies = [
 ```
 
 ### **start_server.py**
+
 ```python
 #!/usr/bin/env python3
 """
@@ -142,7 +148,7 @@ from app import app
 if __name__ == "__main__":
     # Configurar porta para o Replit
     port = int(os.environ.get("PORT", 8080))
-    
+
     # Executar aplicação
     app.run(
         host="0.0.0.0",
@@ -163,26 +169,32 @@ Após o deploy, teste em:
 ## 🚨 **Troubleshooting**
 
 ### **Problema: Dependências não instalam**
+
 **Solução**: Execute `pip install -r requirements.txt` no console do Replit
 
 ### **Problema: Aplicação não inicia**
+
 **Solução**: Verifique se o arquivo `start_server.py` está configurado corretamente
 
 ### **Problema: Porta não disponível**
+
 **Solução**: O Replit configura automaticamente a porta via variável de ambiente
 
 ### **Problema: Arquivos não encontrados**
+
 **Solução**: Verifique se todos os arquivos foram importados corretamente
 
 ## 📊 **Monitoramento e Logs**
 
 ### **Replit Console**
+
 - **Logs** de execução em tempo real
 - **Erros** e mensagens de debug
 - **Performance** da aplicação
 - **Uso de recursos** do sistema
 
 ### **Replit Analytics**
+
 - **Visitas** e **pageviews**
 - **Performance** e **tempo de carregamento**
 - **Dispositivos** e **navegadores**
@@ -191,11 +203,13 @@ Após o deploy, teste em:
 ## 🌐 **Configurações de Rede**
 
 ### **Porta Automática**
+
 - **Replit** configura automaticamente a porta
 - **Variável** `PORT` definida pelo ambiente
 - **Fallback** para porta 8080 se não definida
 
 ### **Host Configurado**
+
 - **Host** configurado para `0.0.0.0`
 - **Acesso** externo habilitado
 - **Firewall** configurado pelo Replit
@@ -203,23 +217,27 @@ Após o deploy, teste em:
 ## 🔄 **Deploy Automático**
 
 ### **GitHub Integration**
+
 - ✅ **Deploy automático** após cada push
 - ✅ **Sincronização** em tempo real
 - ✅ **Versionamento** automático
 
 ### **Branch Deploy**
+
 - **main** → Deploy automático
 - **develop** → Deploy de preview (opcional)
 
 ## 📈 **Performance e Otimização**
 
 ### **Recursos do Replit**
+
 - **CPU** e **RAM** otimizados
 - **Storage** SSD para performance
 - **CDN** global para arquivos estáticos
 - **SSL** automático para segurança
 
 ### **Otimizações Python**
+
 - **Flask** configurado para produção
 - **Debug** desabilitado para performance
 - **Logs** otimizados para produção

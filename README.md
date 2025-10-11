@@ -8,15 +8,13 @@ O **Crypto Rocket** é uma aplicação web que realiza análise técnica avança
 
 ### 🎯 Criptomoedas Analisadas
 
-O sistema analisa exclusivamente as seguintes **16 criptomoedas principais**:
+O sistema analisa exclusivamente as seguintes **12 criptomoedas**:
 
 - **Bitcoin (BTC)** - A primeira e mais conhecida criptomoeda
 - **Ethereum (ETH)** - Plataforma de contratos inteligentes
 - **Ripple (XRP)** - Solução de pagamentos internacionais
-- **Tether (USDT)** - Stablecoin mais popular
 - **Binance Coin (BNB)** - Token da maior exchange
 - **Solana (SOL)** - Blockchain de alta performance
-- **USD Coin (USDC)** - Stablecoin regulamentada
 - **Dogecoin (DOGE)** - Criptomoeda baseada em meme
 - **TRON (TRX)** - Plataforma de entretenimento digital
 - **Cardano (ADA)** - Blockchain de terceira geração
@@ -24,8 +22,6 @@ O sistema analisa exclusivamente as seguintes **16 criptomoedas principais**:
 - **Sui (SUI)** - Layer 1 de nova geração
 - **Stellar (XLM)** - Rede de pagamentos globais
 - **Uniswap (UNI)** - Protocolo de DEX líder
-- **Polkadot (DOT)** - Plataforma de interoperabilidade
-- **Dai (DAI)** - Stablecoin descentralizada
 
 ## ⚠️ **IMPORTANTE: Valores Ilustrativos**
 
@@ -48,17 +44,20 @@ O sistema analisa exclusivamente as seguintes **16 criptomoedas principais**:
 ## 🛠️ Tecnologias Utilizadas
 
 ### Frontend
+
 - **HTML5** - Estrutura semântica
 - **CSS3** - Estilização moderna com gradientes e animações
 - **JavaScript ES6+** - Lógica de negócio e interatividade
 - **Canvas API** - Sistema de partículas animadas
 
 ### Backend
+
 - **Python 3.9+** - Lógica de análise técnica
 - **Flask** - Framework web
 - **Netlify Functions** - Serverless para produção
 
 ### Análise Técnica
+
 - **Indicadores Básicos: price_change_24h, volume_24h, market_cap**
 - **Médias móveis simples e exponencial**
 - **Análise de volume e volatilidade**
@@ -67,18 +66,21 @@ O sistema analisa exclusivamente as seguintes **16 criptomoedas principais**:
 ## 🚀 Funcionalidades
 
 ### ✨ Interface Moderna
+
 - **Design responsivo** para todos os dispositivos
 - **Tema escuro** com gradientes elegantes
 - **Partículas animadas** em verde claro suave
 - **Animações fluidas** e transições suaves
 
 ### 📈 Análise Técnica
-- **16 criptomoedas** analisadas simultaneamente
+
+- **12 criptomoedas** analisadas simultaneamente
 - **Indicadores múltiplos** para cada moeda
 - **Sinais de trading** com confiança percentual
 - **Ranking automático** das melhores oportunidades
 
 ### 🔍 Sistema de Busca
+
 - **Análise em tempo real** (com dados simulados)
 - **Resultados organizados** por potencial de ganho
 - **Informações detalhadas** de cada oportunidade
@@ -94,6 +96,7 @@ O sistema analisa exclusivamente as seguintes **16 criptomoedas principais**:
 ## 🎨 Sistema de Partículas
 
 O fundo da aplicação apresenta um sistema de partículas elegante:
+
 - **150 partículas** em movimento suave
 - **Cor verde claro** (#90EE90) com bordas sutilmente brilhantes
 - **Interação com mouse** através de magnetismo
@@ -120,11 +123,13 @@ Signal: Price change + Volume + Market cap analysis
 ## 🔧 Instalação Local
 
 ### Pré-requisitos
+
 - Python 3.9+
 - Navegador moderno
 - Conexão com internet
 
 ### Passos
+
 ```bash
 # Clone o repositório
 git clone https://github.com/seu-usuario/crypto-rocket.git
@@ -158,12 +163,14 @@ CryptoRocket/
 ## 🌐 Deploy
 
 ### Netlify (Recomendado)
+
 - **Deploy automático** via GitHub
 - **Serverless functions** para análise
 - **CDN global** para performance
 - **HTTPS automático**
 
 ### Vercel
+
 - **Deploy rápido** e simples
 - **Edge functions** para performance
 - **Integração** com GitHub

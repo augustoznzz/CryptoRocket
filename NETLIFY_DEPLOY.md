@@ -11,10 +11,8 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 - **Bitcoin (BTC)** - A primeira e mais conhecida criptomoeda
 - **Ethereum (ETH)** - Plataforma de contratos inteligentes
 - **Ripple (XRP)** - Solução de pagamentos internacionais
-- **Tether (USDT)** - Stablecoin mais popular
 - **Binance Coin (BNB)** - Token da maior exchange
 - **Solana (SOL)** - Blockchain de alta performance
-- **USD Coin (USDC)** - Stablecoin regulamentada
 - **Dogecoin (DOGE)** - Criptomoeda baseada em meme
 - **TRON (TRX)** - Plataforma de entretenimento digital
 - **Cardano (ADA)** - Blockchain de terceira geração
@@ -22,8 +20,6 @@ O sistema analisa exclusivamente as seguintes criptomoedas:
 - **Sui (SUI)** - Layer 1 de nova geração
 - **Stellar (XLM)** - Rede de pagamentos globais
 - **Uniswap (UNI)** - Protocolo de DEX líder
-- **Polkadot (DOT)** - Plataforma de interoperabilidade
-- **Dai (DAI)** - Stablecoin descentralizada
 
 ## ⚠️ **IMPORTANTE: Valores Ilustrativos**
 
@@ -48,6 +44,7 @@ O projeto já está configurado para funcionar automaticamente na Netlify com:
 ### 🔧 **Passos para Deploy**
 
 #### **1. Preparar o Repositório**
+
 ```bash
 # Certifique-se de que todos os arquivos estão commitados
 git add .
@@ -56,21 +53,25 @@ git push origin main
 ```
 
 #### **2. Conectar na Netlify**
+
 1. **Acesse** [netlify.com](https://netlify.com)
 2. **Faça login** com sua conta GitHub
 3. **Clique** em "New site from Git"
 
 #### **3. Selecionar Repositório**
+
 1. **Escolha** "GitHub" como provedor
 2. **Selecione** seu repositório `CryptoRocket`
 3. **Confirme** a conexão
 
 #### **4. Configurar Build**
+
 - **Build command**: `echo 'Build completed'`
 - **Publish directory**: `.` (ponto)
 - **Deploy settings**: Deixar padrão
 
 #### **5. Deploy**
+
 - **Clique** em "Deploy site"
 - **Aguarde** o processo de build
 - **Site estará online** em alguns minutos
@@ -90,18 +91,21 @@ CryptoRocket/
 ## 🎯 **Funcionalidades Garantidas**
 
 ### ✨ Interface Moderna
+
 - **Design responsivo** para todos os dispositivos
 - **Tema escuro** com gradientes elegantes
 - **Partículas animadas** em verde claro suave
 - **Animações fluidas** e transições suaves
 
 ### 📈 Análise Técnica
+
 - **16 criptomoedas** analisadas simultaneamente
 - **Indicadores múltiplos** para cada moeda
 - **Sinais de trading** com confiança percentual
 - **Ranking automático** das melhores oportunidades
 
 ### 🎨 Sistema de Partículas
+
 - **150 partículas** em movimento suave
 - **Cor verde claro** (#90EE90) com bordas sutilmente brilhantes
 - **Interação com mouse** através de magnetismo
@@ -110,6 +114,7 @@ CryptoRocket/
 ## 🔧 **Configurações Específicas**
 
 ### **netlify.toml**
+
 ```toml
 [build]
   publish = "."
@@ -121,7 +126,8 @@ CryptoRocket/
   status = 200
 ```
 
-### **_redirects**
+### **\_redirects**
+
 ```
 /*    /index.html   200
 ```
@@ -138,26 +144,32 @@ Após o deploy, teste em:
 ## 🚨 **Troubleshooting**
 
 ### **Problema: CSS não carrega**
+
 **Solução**: Verifique se o arquivo `index.html` está na raiz do projeto
 
 ### **Problema: Partículas não aparecem**
+
 **Solução**: Verifique se o JavaScript está sendo executado (console do navegador)
 
 ### **Problema: Deploy falha**
+
 **Solução**: Verifique se todos os arquivos estão commitados no GitHub
 
 ### **Problema: Site não redireciona**
+
 **Solução**: Verifique se `netlify.toml` e `_redirects` estão configurados
 
 ## 📊 **Monitoramento e Analytics**
 
 ### **Netlify Analytics**
+
 - **Visitas** e **pageviews**
 - **Performance** e **tempo de carregamento**
 - **Dispositivos** e **navegadores**
 - **Países** de origem
 
 ### **Logs de Deploy**
+
 - **Build status** e **erros**
 - **Tempo** de deploy
 - **Cache** e **otimizações**
@@ -165,33 +177,39 @@ Após o deploy, teste em:
 ## 🌐 **Domínio Personalizado**
 
 ### **Configurar Domínio Próprio**
+
 1. **Configure** DNS apontando para Netlify
 2. **Adicione** o domínio nas configurações da Netlify
 3. **Configure** SSL automático
 
 ### **Subdomínio Netlify**
+
 - **URL padrão**: `seu-projeto.netlify.app`
 - **Customização**: Disponível nas configurações
 
 ## 🔄 **Deploy Automático**
 
 ### **GitHub Integration**
+
 - ✅ **Deploy automático** após cada push
 - ✅ **Preview deployments** para pull requests
 - ✅ **Rollback** para versões anteriores
 
 ### **Branch Deploy**
+
 - **main** → Deploy automático
 - **develop** → Deploy de preview (opcional)
 
 ## 📈 **Performance e Otimização**
 
 ### **CDN Global**
+
 - **Edge locations** em todo o mundo
 - **Cache inteligente** para arquivos estáticos
 - **Compressão** automática de assets
 
 ### **HTTPS Automático**
+
 - **SSL gratuito** com Let's Encrypt
 - **Renovação automática** de certificados
 - **HSTS** para segurança adicional
