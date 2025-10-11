@@ -5,6 +5,17 @@
     box-sizing: border-box;
 }
 
+/* ULTRA PROTECTION - Force dark background on root */
+:root {
+    background-color: #0c0c0c !important;
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+}
+
+/* Prevent any white space from appearing */
+*:not(.trade-card):not(.signal-type):not(.search-button) {
+    border-color: #0c0c0c !important;
+}
+
 /* Ensure full screen coverage - RADICAL APPROACH */
 html {
     background-color: #0c0c0c !important; /* Solid fallback */
@@ -110,7 +121,35 @@ body::after {
 /* Remove background-attachment: fixed for mobile - doesn't work properly */
 @media (max-width: 768px) {
     #particles-canvas {
-        background-attachment: scroll; /* Scroll instead of fixed for mobile */
+        background-attachment: scroll !important; /* Scroll instead of fixed for mobile */
+        width: 100vw !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+    }
+    
+    /* Force dark on ALL structural elements in mobile */
+    html, body, #absolute-background {
+        background-color: #0c0c0c !important;
+        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+    }
+    
+    /* Prevent any margin/padding that could expose white */
+    * {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    
+    html {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+    
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
     }
 }
 

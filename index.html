@@ -2,9 +2,13 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0c0c0c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- Force dark background via meta -->
+    <style>html{background:#0c0c0c!important}body{background:#0c0c0c!important}</style>
     <title>Crypto Rocket - Análise em Tempo Real</title>
     <style>
         /* Dark Theme Crypto Trading Interface */
@@ -12,6 +16,17 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* ULTRA PROTECTION - Force dark background on root */
+        :root {
+            background-color: #0c0c0c !important;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+        }
+
+        /* Prevent any white space from appearing */
+        *:not(.trade-card):not(.signal-type):not(.search-button) {
+            border-color: #0c0c0c !important;
         }
 
         /* Ensure full screen coverage - RADICAL APPROACH */
@@ -449,6 +464,34 @@
             /* Remove background-attachment: fixed for mobile */
             #particles-canvas {
                 background-attachment: scroll !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                min-height: 100vh !important;
+                min-height: 100dvh !important;
+            }
+            
+            /* Force dark on ALL structural elements in mobile */
+            html, body, #absolute-background {
+                background-color: #0c0c0c !important;
+                background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+            }
+            
+            /* Prevent any margin/padding that could expose white */
+            * {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+            
+            html {
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+            }
+            
+            body {
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
             }
             
             header h1 {
@@ -598,6 +641,9 @@
     </style>
 </head>
 <body>
+    <!-- CAMADA DE PROTEÇÃO ABSOLUTA - DIV FUNDO -->
+    <div id="absolute-background" style="position: fixed; top: -200px; left: -200px; right: -200px; bottom: -200px; width: calc(100% + 400px); height: calc(100% + 400px); background-color: #0c0c0c; background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%); z-index: -2000; pointer-events: none;"></div>
+    
     <!-- Canvas de Partículas - SISTEMA FUNCIONAL -->
     <canvas id="particles-canvas"></canvas>
     
@@ -662,17 +708,68 @@
                     window.visualViewport.height : 
                     window.innerHeight;
                 
+                const vw = window.innerWidth;
+                
                 // Apply exact height to prevent white spaces
-                if (window.innerWidth <= 768) {
+                if (vw <= 768) {
                     document.documentElement.style.setProperty('height', `${vh}px`, 'important');
-                    document.body.style.setProperty('height', `${vh}px`, 'important');
+                    document.documentElement.style.setProperty('min-height', `${vh}px`, 'important');
+                    document.documentElement.style.setProperty('max-height', `${vh}px`, 'important');
                     
-                    // Also update particles canvas
+                    document.body.style.setProperty('height', `${vh}px`, 'important');
+                    document.body.style.setProperty('min-height', `${vh}px`, 'important');
+                    document.body.style.setProperty('max-height', `${vh}px`, 'important');
+                    
+                    // Update particles canvas
                     const particlesCanvas = document.getElementById('particles-canvas');
                     if (particlesCanvas) {
                         particlesCanvas.style.setProperty('height', `${vh}px`, 'important');
+                        particlesCanvas.style.setProperty('min-height', `${vh}px`, 'important');
+                    }
+                    
+                    // Update absolute background
+                    const absoluteBackground = document.getElementById('absolute-background');
+                    if (absoluteBackground) {
+                        absoluteBackground.style.setProperty('height', `calc(${vh}px + 400px)`, 'important');
+                        absoluteBackground.style.setProperty('top', '-200px', 'important');
+                        absoluteBackground.style.setProperty('bottom', '-200px', 'important');
                     }
                 }
+            }
+            
+            // ULTRA RADICAL - Force dark on ALL elements
+            function forceBackgroundOnAll() {
+                const darkColor = '#0c0c0c';
+                const darkGradient = 'linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%)';
+                
+                // Get ALL elements
+                const allElements = document.querySelectorAll('*');
+                
+                // Apply dark background to elements that shouldn't have custom backgrounds
+                allElements.forEach(el => {
+                    const tagName = el.tagName.toLowerCase();
+                    
+                    // Only force on structural elements, not on content elements
+                    if (['html', 'body', 'div', 'main', 'section', 'article', 'aside', 'nav', 'header', 'footer'].includes(tagName)) {
+                        const computedStyle = window.getComputedStyle(el);
+                        const currentBg = computedStyle.backgroundColor;
+                        
+                        // If it's white or transparent, force dark
+                        if (currentBg === 'rgba(0, 0, 0, 0)' || currentBg === 'transparent' || 
+                            currentBg === 'rgb(255, 255, 255)' || currentBg === '#ffffff' || currentBg === 'white') {
+                            
+                            // Special handling for container elements
+                            if (el.classList.contains('container') || el.classList.contains('results-section') || 
+                                el.classList.contains('results-container') || tagName === 'main' || 
+                                tagName === 'header' || tagName === 'footer') {
+                                el.style.setProperty('background', 'transparent', 'important');
+                            } else if (tagName === 'html' || tagName === 'body') {
+                                el.style.setProperty('background-color', darkColor, 'important');
+                                el.style.setProperty('background', darkGradient, 'important');
+                            }
+                        }
+                    }
+                });
             }
             
             // Enhanced dark background maintenance - RADICAL VERSION
@@ -695,12 +792,24 @@
                 document.body.style.setProperty('overscroll-behavior', 'none', 'important');
                 document.body.style.setProperty('overscroll-behavior-y', 'none', 'important');
                 
+                // Prevent touch actions that might expose white
+                document.documentElement.style.setProperty('touch-action', 'pan-y', 'important');
+                
                 // Force all main containers to have transparent background
                 const containers = document.querySelectorAll('.container, .results-section, .results-container, main, header, footer');
                 containers.forEach(container => {
                     container.style.setProperty('background', 'transparent', 'important');
                     container.style.setProperty('background-color', 'transparent', 'important');
                 });
+                
+                // Ensure absolute background exists and is configured
+                let absoluteBackground = document.getElementById('absolute-background');
+                if (!absoluteBackground) {
+                    absoluteBackground = document.createElement('div');
+                    absoluteBackground.id = 'absolute-background';
+                    absoluteBackground.style.cssText = 'position: fixed; top: -200px; left: -200px; right: -200px; bottom: -200px; width: calc(100% + 400px); height: calc(100% + 400px); background-color: #0c0c0c; background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%); z-index: -2000; pointer-events: none;';
+                    document.body.insertBefore(absoluteBackground, document.body.firstChild);
+                }
                 
                 // Mobile-specific fixes
                 if (window.innerWidth <= 768) {
@@ -711,6 +820,7 @@
                     document.body.style.setProperty('right', '0', 'important');
                     document.body.style.setProperty('bottom', '0', 'important');
                     document.body.style.setProperty('overflow', 'hidden', 'important');
+                    document.body.style.setProperty('width', '100vw', 'important');
                     
                     // Make container scrollable instead of body
                     const container = document.querySelector('.container');
@@ -723,11 +833,19 @@
                         container.style.setProperty('overflow-y', 'auto', 'important');
                         container.style.setProperty('overflow-x', 'hidden', 'important');
                         container.style.setProperty('-webkit-overflow-scrolling', 'touch', 'important');
+                        container.style.setProperty('height', '100%', 'important');
+                        container.style.setProperty('width', '100%', 'important');
                     }
                     
                     // Ensure particles canvas background
                     const particlesCanvas = document.getElementById('particles-canvas');
                     if (particlesCanvas) {
+                        particlesCanvas.style.setProperty('position', 'fixed', 'important');
+                        particlesCanvas.style.setProperty('top', '0', 'important');
+                        particlesCanvas.style.setProperty('left', '0', 'important');
+                        particlesCanvas.style.setProperty('right', '0', 'important');
+                        particlesCanvas.style.setProperty('bottom', '0', 'important');
+                        particlesCanvas.style.setProperty('width', '100vw', 'important');
                         particlesCanvas.style.setProperty('background-color', darkColor, 'important');
                         particlesCanvas.style.setProperty('background', darkGradient, 'important');
                         particlesCanvas.style.setProperty('background-attachment', 'scroll', 'important');
@@ -735,6 +853,9 @@
                     
                     // Set exact height
                     setExactHeight();
+                    
+                    // Force background on all structural elements
+                    forceBackgroundOnAll();
                 }
             }
 
@@ -972,12 +1093,35 @@
             
             // Continuous monitoring for mobile (aggressive approach)
             if (window.innerWidth <= 768) {
-                // Check background every 1 second on mobile devices
+                // Check background every 500ms on mobile devices (more frequent)
                 setInterval(function() {
                     ensureDarkBackground();
                     setExactHeight();
-                }, 1000);
+                    forceBackgroundOnAll();
+                }, 500);
+                
+                // Also check on every animation frame for ultra responsiveness
+                let lastCheck = 0;
+                function continuousCheck(timestamp) {
+                    if (timestamp - lastCheck > 2000) { // Every 2 seconds via RAF
+                        ensureDarkBackground();
+                        setExactHeight();
+                        lastCheck = timestamp;
+                    }
+                    requestAnimationFrame(continuousCheck);
+                }
+                requestAnimationFrame(continuousCheck);
             }
+            
+            // Additional safety: check on any user interaction
+            ['click', 'touchstart', 'scroll'].forEach(eventType => {
+                document.addEventListener(eventType, function() {
+                    if (window.innerWidth <= 768) {
+                        ensureDarkBackground();
+                        setExactHeight();
+                    }
+                }, { passive: true });
+            });
         });
 
         // Add a subtle parallax effect to the background
