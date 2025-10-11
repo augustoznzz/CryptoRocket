@@ -14,11 +14,10 @@
             box-sizing: border-box;
         }
 
-        /* Ensure full screen coverage with safe area support */
+        /* Ensure full screen coverage - RADICAL APPROACH */
         html {
             background-color: #0c0c0c !important; /* Solid fallback */
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
-            background-attachment: fixed !important; /* Fix background position */
             min-height: 100vh;
             min-height: 100dvh;
             min-height: -webkit-fill-available;
@@ -26,15 +25,32 @@
             width: 100%;
             overflow: hidden;
             overflow-y: auto;
-            /* Safe area insets for notch devices */
-            padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+            /* REMOVIDO: Safe area padding - estava criando espaços brancos */
+            /* Prevent bounce scroll white bars */
+            overscroll-behavior: none;
+            overscroll-behavior-y: none;
+        }
+
+        /* Layer 1 - Deepest protection layer - covers EVERYTHING with extra space */
+        html::before {
+            content: '';
+            position: fixed;
+            top: -100px;
+            left: -100px;
+            right: -100px;
+            bottom: -100px;
+            width: calc(100% + 200px);
+            height: calc(100% + 200px);
+            background-color: #0c0c0c;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            z-index: -1000;
+            pointer-events: none;
         }
 
         html, body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background-color: #0c0c0c !important; /* Solid fallback */
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
-            background-attachment: fixed !important; /* Fix background position */
             color: #e0e0e0;
             min-height: 100vh;
             min-height: 100dvh; /* Dynamic viewport height for mobile */
@@ -45,6 +61,40 @@
             /* Force full coverage */
             height: 100%;
             width: 100%;
+            /* Prevent bounce scroll white bars */
+            overscroll-behavior: none;
+            overscroll-behavior-y: none;
+        }
+
+        /* Layer 2 - Body before - intermediate protection */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50px;
+            left: -50px;
+            right: -50px;
+            bottom: -50px;
+            width: calc(100% + 100px);
+            height: calc(100% + 100px);
+            background-color: #0c0c0c;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            z-index: -500;
+            pointer-events: none;
+        }
+
+        /* Layer 3 - Body after - extra top/bottom coverage */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: 0;
+            right: 0;
+            height: calc(100% + 400px);
+            width: 100%;
+            background-color: #0c0c0c;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            z-index: -100;
+            pointer-events: none;
         }
         
         /* Particles Canvas - FUNDO ÚNICO COM PARTÍCULAS */
@@ -64,7 +114,6 @@
             touch-action: none;
             background-color: #0c0c0c; /* Solid fallback */
             background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%); /* Fundo único aqui */
-            background-attachment: fixed;
         }
 
         .container {
@@ -349,59 +398,57 @@
             }
         }
 
-        /* Responsive Design */
+        /* Responsive Design - RADICAL MOBILE FIX */
         @media (max-width: 768px) {
             html {
                 background-color: #0c0c0c !important;
                 background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
-                background-attachment: fixed !important;
+                /* REMOVIDO: background-attachment: fixed - não funciona em mobile */
                 overflow: hidden;
-                overflow-y: auto;
+                overflow-y: hidden;
                 min-height: 100vh;
                 min-height: 100dvh;
                 min-height: -webkit-fill-available;
                 height: 100%;
             }
             
+            /* TÉCNICA RADICAL: Body fixo para prevenir bounce scroll branco */
             body {
                 background-color: #0c0c0c !important;
                 background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
-                background-attachment: fixed !important;
-                overflow-x: hidden;
-                overflow-y: auto;
-                min-height: 100vh;
-                min-height: 100dvh;
-                min-height: -webkit-fill-available;
-                height: 100%;
-                width: 100%;
-                position: relative;
-            }
-            
-            /* Prevent white bars with pseudo-element coverage */
-            body::before {
-                content: '';
-                position: fixed;
+                /* REMOVIDO: background-attachment: fixed - não funciona em mobile */
+                position: fixed !important; /* KEY FIX */
                 top: 0;
                 left: 0;
                 right: 0;
                 bottom: 0;
+                overflow: hidden !important; /* No scroll on body */
                 width: 100%;
                 height: 100%;
                 min-height: 100vh;
                 min-height: 100dvh;
                 min-height: -webkit-fill-available;
-                background-color: #0c0c0c;
-                background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
-                z-index: -10;
-                pointer-events: none;
             }
             
+            /* Container scrollável - scroll interno em vez do body */
             .container {
+                position: absolute !important; /* KEY FIX */
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
                 padding: 1rem;
                 background: transparent;
-                min-height: 100vh;
-                min-height: 100dvh;
-                min-height: -webkit-fill-available;
+                overflow-y: auto !important; /* Scroll no container, não no body */
+                overflow-x: hidden;
+                -webkit-overflow-scrolling: touch; /* Smooth scroll iOS */
+                height: 100%;
+                max-height: 100%;
+            }
+            
+            /* Remove background-attachment: fixed for mobile */
+            #particles-canvas {
+                background-attachment: scroll !important;
             }
             
             header h1 {
@@ -439,12 +486,12 @@
             }
         }
 
-        /* Mobile-specific fixes */
+        /* Mobile-specific fixes - Small devices */
         @media (max-width: 480px) {
             html {
                 background-color: #0c0c0c !important;
                 background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
-                background-attachment: fixed !important;
+                /* REMOVIDO: background-attachment: fixed */
                 min-height: 100vh;
                 min-height: 100dvh;
                 min-height: -webkit-fill-available;
@@ -454,7 +501,8 @@
             body {
                 background-color: #0c0c0c !important;
                 background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
-                background-attachment: fixed !important;
+                /* REMOVIDO: background-attachment: fixed */
+                /* Body já está fixo no media query 768px */
                 min-height: 100vh;
                 min-height: 100dvh;
                 min-height: -webkit-fill-available;
@@ -464,9 +512,7 @@
             .container {
                 padding: 0.5rem;
                 background: transparent;
-                min-height: 100vh;
-                min-height: 100dvh;
-                min-height: -webkit-fill-available;
+                /* Container já está scrollável no media query 768px */
             }
             
             .trade-card {
@@ -609,7 +655,27 @@
             const errorSection = document.getElementById('error');
             const errorMessage = document.getElementById('errorMessage');
 
-            // Enhanced dark background maintenance - MOBILE OPTIMIZED - AGGRESSIVE VERSION
+            // RADICAL MOBILE FIX - Calculate and apply exact viewport height
+            function setExactHeight() {
+                // Get real viewport height using visualViewport API (iOS Safari compatible)
+                const vh = window.visualViewport ? 
+                    window.visualViewport.height : 
+                    window.innerHeight;
+                
+                // Apply exact height to prevent white spaces
+                if (window.innerWidth <= 768) {
+                    document.documentElement.style.setProperty('height', `${vh}px`, 'important');
+                    document.body.style.setProperty('height', `${vh}px`, 'important');
+                    
+                    // Also update particles canvas
+                    const particlesCanvas = document.getElementById('particles-canvas');
+                    if (particlesCanvas) {
+                        particlesCanvas.style.setProperty('height', `${vh}px`, 'important');
+                    }
+                }
+            }
+            
+            // Enhanced dark background maintenance - RADICAL VERSION
             function ensureDarkBackground() {
                 // Solid color fallback + gradient for maximum coverage
                 const darkColor = '#0c0c0c';
@@ -623,9 +689,11 @@
                 document.documentElement.style.setProperty('background', darkGradient, 'important');
                 document.body.style.setProperty('background', darkGradient, 'important');
                 
-                // Force background-attachment to fixed
-                document.documentElement.style.setProperty('background-attachment', 'fixed', 'important');
-                document.body.style.setProperty('background-attachment', 'fixed', 'important');
+                // Force overscroll-behavior to prevent bounce white bars
+                document.documentElement.style.setProperty('overscroll-behavior', 'none', 'important');
+                document.documentElement.style.setProperty('overscroll-behavior-y', 'none', 'important');
+                document.body.style.setProperty('overscroll-behavior', 'none', 'important');
+                document.body.style.setProperty('overscroll-behavior-y', 'none', 'important');
                 
                 // Force all main containers to have transparent background
                 const containers = document.querySelectorAll('.container, .results-section, .results-container, main, header, footer');
@@ -634,97 +702,45 @@
                     container.style.setProperty('background-color', 'transparent', 'important');
                 });
                 
-                // Get real viewport height (especially important for mobile)
-                const getViewportHeight = () => {
-                    // Use visualViewport API if available (iOS Safari)
-                    if (window.visualViewport) {
-                        return window.visualViewport.height;
-                    }
-                    // Fallback to window.innerHeight
-                    return window.innerHeight;
-                };
-                
-                // Additional mobile-specific fixes
+                // Mobile-specific fixes
                 if (window.innerWidth <= 768) {
-                    const viewportHeight = getViewportHeight();
+                    // Apply body fixed position for mobile (prevents bounce scroll white bars)
+                    document.body.style.setProperty('position', 'fixed', 'important');
+                    document.body.style.setProperty('top', '0', 'important');
+                    document.body.style.setProperty('left', '0', 'important');
+                    document.body.style.setProperty('right', '0', 'important');
+                    document.body.style.setProperty('bottom', '0', 'important');
+                    document.body.style.setProperty('overflow', 'hidden', 'important');
                     
-                    // Force full height coverage with multiple strategies
-                    document.documentElement.style.setProperty('min-height', '100vh', 'important');
-                    document.documentElement.style.setProperty('min-height', '100dvh', 'important');
-                    document.documentElement.style.setProperty('min-height', '-webkit-fill-available', 'important');
-                    document.documentElement.style.setProperty('height', '100%', 'important');
-                    document.documentElement.style.setProperty('overflow', 'hidden', 'important');
-                    document.documentElement.style.setProperty('overflow-y', 'auto', 'important');
+                    // Make container scrollable instead of body
+                    const container = document.querySelector('.container');
+                    if (container) {
+                        container.style.setProperty('position', 'absolute', 'important');
+                        container.style.setProperty('top', '0', 'important');
+                        container.style.setProperty('left', '0', 'important');
+                        container.style.setProperty('right', '0', 'important');
+                        container.style.setProperty('bottom', '0', 'important');
+                        container.style.setProperty('overflow-y', 'auto', 'important');
+                        container.style.setProperty('overflow-x', 'hidden', 'important');
+                        container.style.setProperty('-webkit-overflow-scrolling', 'touch', 'important');
+                    }
                     
-                    document.body.style.setProperty('min-height', '100vh', 'important');
-                    document.body.style.setProperty('min-height', '100dvh', 'important');
-                    document.body.style.setProperty('min-height', '-webkit-fill-available', 'important');
-                    document.body.style.setProperty('height', '100%', 'important');
-                    document.body.style.setProperty('width', '100%', 'important');
-                    document.body.style.setProperty('overflow-x', 'hidden', 'important');
-                    
-                    // Ensure particles canvas covers full screen with multiple strategies
+                    // Ensure particles canvas background
                     const particlesCanvas = document.getElementById('particles-canvas');
                     if (particlesCanvas) {
-                        // Use inset for maximum coverage
-                        particlesCanvas.style.setProperty('position', 'fixed', 'important');
-                        particlesCanvas.style.setProperty('top', '0', 'important');
-                        particlesCanvas.style.setProperty('left', '0', 'important');
-                        particlesCanvas.style.setProperty('right', '0', 'important');
-                        particlesCanvas.style.setProperty('bottom', '0', 'important');
-                        particlesCanvas.style.setProperty('width', '100%', 'important');
-                        particlesCanvas.style.setProperty('min-height', '100vh', 'important');
-                        particlesCanvas.style.setProperty('min-height', '100dvh', 'important');
-                        particlesCanvas.style.setProperty('min-height', '-webkit-fill-available', 'important');
-                        particlesCanvas.style.setProperty('height', `${viewportHeight}px`, 'important');
                         particlesCanvas.style.setProperty('background-color', darkColor, 'important');
                         particlesCanvas.style.setProperty('background', darkGradient, 'important');
-                        
-                        // Set canvas dimensions programmatically
-                        if (particlesCanvas.width !== window.innerWidth || 
-                            particlesCanvas.style.height !== `${viewportHeight}px`) {
-                            particlesCanvas.style.height = `${viewportHeight}px`;
-                        }
+                        particlesCanvas.style.setProperty('background-attachment', 'scroll', 'important');
                     }
+                    
+                    // Set exact height
+                    setExactHeight();
                 }
             }
 
-            // Call on load and after results display
+            // Call on load
             ensureDarkBackground();
-            
-            // Additional mobile viewport handling with iOS support
-            function handleMobileViewport() {
-                if (window.innerWidth <= 768) {
-                    const getViewportHeight = () => {
-                        if (window.visualViewport) {
-                            return window.visualViewport.height;
-                        }
-                        return window.innerHeight;
-                    };
-                    
-                    const viewportHeight = getViewportHeight();
-                    
-                    // Force full coverage
-                    document.documentElement.style.height = '100%';
-                    document.body.style.height = '100%';
-                    
-                    // Update canvas height to match real viewport
-                    const particlesCanvas = document.getElementById('particles-canvas');
-                    if (particlesCanvas) {
-                        particlesCanvas.style.height = `${viewportHeight}px`;
-                    }
-                    
-                    // Prevent any white space temporarily
-                    document.body.style.overflow = 'hidden';
-                    document.documentElement.style.overflow = 'hidden';
-                    
-                    // Re-enable after a moment
-                    setTimeout(() => {
-                        document.body.style.overflow = '';
-                        document.documentElement.style.overflow = '';
-                    }, 100);
-                }
-            }
+            setExactHeight();
 
             searchBtn.addEventListener('click', function() {
                 startSearch();
@@ -816,8 +832,10 @@
                     resultsSection.style.display = 'block';
                     
                     // Ensure dark background after results are displayed
-                    setTimeout(ensureDarkBackground, 100);
-                    setTimeout(handleMobileViewport, 100);
+                    setTimeout(function() {
+                        ensureDarkBackground();
+                        setExactHeight();
+                    }, 100);
                 } else {
                     displayError('No trading opportunities found at the moment.');
                 }
@@ -864,12 +882,14 @@
             }
 
                          function displayError(message) {
-                 errorMessage.textContent = message;
-                 errorSection.style.display = 'block';
-                 
-                 // Ensure dark background after error display
-                 setTimeout(ensureDarkBackground, 100);
-                 setTimeout(handleMobileViewport, 100);
+                errorMessage.textContent = message;
+                errorSection.style.display = 'block';
+                
+                // Ensure dark background after error display
+                setTimeout(function() {
+                    ensureDarkBackground();
+                    setExactHeight();
+                }, 100);
              }
              
              function displayRateLimitError(message) {
@@ -884,11 +904,13 @@
                          </div>
                      </div>
                  `;
-                 errorSection.style.display = 'block';
-                 
-                 // Ensure dark background after error display
-                 setTimeout(ensureDarkBackground, 100);
-                 setTimeout(handleMobileViewport, 100);
+                errorSection.style.display = 'block';
+                
+                // Ensure dark background after error display
+                setTimeout(function() {
+                    ensureDarkBackground();
+                    setExactHeight();
+                }, 100);
              }
 
             // Add some visual feedback for button interactions
@@ -904,55 +926,57 @@
                 }
             });
             
-            // Ensure dark background on window resize
+            // RADICAL EVENT LISTENERS - Ensure dark background at all times
             window.addEventListener('resize', function() {
                 ensureDarkBackground();
-                handleMobileViewport();
+                setExactHeight();
             });
             
             // Handle orientation changes
             window.addEventListener('orientationchange', function() {
                 setTimeout(() => {
                     ensureDarkBackground();
-                    handleMobileViewport();
+                    setExactHeight();
                 }, 200);
             });
             
-            // Visual Viewport API for iOS Safari
+            // Visual Viewport API for iOS Safari (critical for accurate height)
             if (window.visualViewport) {
                 window.visualViewport.addEventListener('resize', function() {
                     ensureDarkBackground();
-                    handleMobileViewport();
+                    setExactHeight();
+                });
+                
+                window.visualViewport.addEventListener('scroll', function() {
+                    setExactHeight();
                 });
             }
             
             // Additional mobile-specific event listeners
             if ('ontouchstart' in window) {
                 // Mobile device detected
-                document.addEventListener('touchstart', ensureDarkBackground);
-                document.addEventListener('touchend', ensureDarkBackground);
-                document.addEventListener('touchmove', ensureDarkBackground);
+                document.addEventListener('touchstart', ensureDarkBackground, { passive: true });
             }
             
-            // Ensure background on scroll events
-            window.addEventListener('scroll', ensureDarkBackground, { passive: true });
-            document.addEventListener('scroll', ensureDarkBackground, { passive: true });
-            
-            // Ensure background on focus/blur (keyboard appearing on mobile)
-            window.addEventListener('focus', ensureDarkBackground, true);
-            window.addEventListener('blur', ensureDarkBackground, true);
-            
             // Ensure background on page visibility change
-            document.addEventListener('visibilitychange', ensureDarkBackground);
+            document.addEventListener('visibilitychange', function() {
+                ensureDarkBackground();
+                setExactHeight();
+            });
             
             // Ensure background when page gains focus
-            window.addEventListener('pageshow', ensureDarkBackground);
-            window.addEventListener('pagehide', ensureDarkBackground);
+            window.addEventListener('pageshow', function() {
+                ensureDarkBackground();
+                setExactHeight();
+            });
             
             // Continuous monitoring for mobile (aggressive approach)
             if (window.innerWidth <= 768) {
-                // Check background every 500ms on mobile devices
-                setInterval(ensureDarkBackground, 500);
+                // Check background every 1 second on mobile devices
+                setInterval(function() {
+                    ensureDarkBackground();
+                    setExactHeight();
+                }, 1000);
             }
         });
 
@@ -1171,6 +1195,8 @@
             window.addEventListener('resize', function() {
                 resizeCanvas();
                 createParticles();
+                ensureDarkBackground();
+                setExactHeight();
             });
             
             // Listener para mudança de orientação (mobile)
@@ -1179,24 +1205,9 @@
                     resizeCanvas();
                     createParticles();
                     ensureDarkBackground();
+                    setExactHeight();
                 }, 100);
             });
-            
-            // Listener para visualViewport changes (iOS Safari)
-            if (window.visualViewport) {
-                window.visualViewport.addEventListener('resize', function() {
-                    resizeCanvas();
-                    ensureDarkBackground();
-                });
-                
-                window.visualViewport.addEventListener('scroll', function() {
-                    // Ensure canvas stays in place during scroll
-                    const particlesCanvas = document.getElementById('particles-canvas');
-                    if (particlesCanvas) {
-                        particlesCanvas.style.height = `${window.visualViewport.height}px`;
-                    }
-                });
-            }
             
             // Verificação adicional após 2 segundos
             setTimeout(() => {
