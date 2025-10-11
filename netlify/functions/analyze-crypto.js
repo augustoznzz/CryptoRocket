@@ -839,42 +839,42 @@ function analyzeCoin(coin) {
 
 // Generate analysis description
 function generateDescription(coin, type, potentialGain, score) {
-  let description = `Análise Técnica ${coin.symbol}:\n`;
+  let description = `Technical Analysis ${coin.symbol}:\n`;
   
-  // Tendência baseada na variação de 24h (sem exibir o percentual numérico)
-  description += `• Tendência: ${coin.price_change_percentage_24h > 0 ? 'Altista' : coin.price_change_percentage_24h < 0 ? 'Baixista' : 'Neutra'} (24h)\n`;
+  // Trend based on 24h change (without showing numerical percentage)
+  description += `• Trend: ${coin.price_change_percentage_24h > 0 ? 'Bullish' : coin.price_change_percentage_24h < 0 ? 'Bearish' : 'Neutral'} (24h)\n`;
   
-  // Preço atual - arredondado e com separadores de milhar
+  // Current price - rounded with thousand separators
   const formattedPrice = Math.round(coin.current_price).toLocaleString('en-US');
-  description += `• Preço atual: $${formattedPrice}\n`;
+  description += `• Current Price: $${formattedPrice}\n`;
   
-  // Volume - com unidades apropriadas
+  // Volume - with appropriate units
   if (coin.volume_24h > 1000000000) {
     const volumeB = (coin.volume_24h / 1000000000).toFixed(1);
-    description += `• Volume: Muito Alto ($${volumeB}B)\n`;
+    description += `• Volume: Very High ($${volumeB}B)\n`;
   } else if (coin.volume_24h > 100000000) {
     const volumeM = (coin.volume_24h / 1000000).toFixed(1);
-    description += `• Volume: Alto ($${volumeM}M)\n`;
+    description += `• Volume: High ($${volumeM}M)\n`;
   } else {
     const volumeM = (coin.volume_24h / 1000000).toFixed(1);
-    description += `• Volume: Médio ($${volumeM}M)\n`;
+    description += `• Volume: Medium ($${volumeM}M)\n`;
   }
   
-  // Valor de mercado - com unidades apropriadas
+  // Market cap - with appropriate units
   if (coin.market_cap > 1000000000000) {
     const marketCapT = (coin.market_cap / 1000000000000).toFixed(1);
-    description += `• Valor de mercado: Muito Alto ($${marketCapT}T)\n`;
+    description += `• Market Cap: Very High ($${marketCapT}T)\n`;
   } else if (coin.market_cap > 10000000000) {
     const marketCapB = (coin.market_cap / 1000000000).toFixed(1);
-    description += `• Valor de mercado: Alto ($${marketCapB}B)\n`;
+    description += `• Market Cap: High ($${marketCapB}B)\n`;
   } else {
     const marketCapB = (coin.market_cap / 1000000000).toFixed(1);
-    description += `• Valor de mercado: Médio ($${marketCapB}B)\n`;
+    description += `• Market Cap: Medium ($${marketCapB}B)\n`;
   }
   
-  const action = type === 'LONG' ? 'Comprar' : (type === 'SHORT' ? 'Vender/Short' : 'Manter/Neutro');
-  description += `\nEstratégia: ${action} com alvo +${potentialGain}%`;
-  description += `\nConfiança: ${Math.round(score * 100)}%`;
+  const action = type === 'LONG' ? 'Buy' : (type === 'SHORT' ? 'Sell/Short' : 'Hold/Neutral');
+  description += `\nStrategy: ${action} with target +${potentialGain}%`;
+  description += `\nConfidence: ${Math.round(score * 100)}%`;
   
   return description;
 }
