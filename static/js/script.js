@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const card = document.createElement('div');
         card.className = 'trade-card';
         
-        const signalTypeClass = result.type === 'LONG' ? 'signal-long' : 'signal-short';
+        const signalTypeClass = result.type === 'LONG' ? 'signal-long' : (result.type === 'SHORT' ? 'signal-short' : 'signal-neutral');
         const emoji = result.type === 'LONG' ? '🔼' : '🔽';
         
         // Adicionar informações de preço se disponíveis

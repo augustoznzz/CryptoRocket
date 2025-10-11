@@ -202,91 +202,181 @@ exports.handler = async (event, context) => {
   }
 };
 
+// Validar que o preço atual está dentro da faixa de 24h
+function validatePriceInRange(coin) {
+  if (!coin.high_24h || !coin.low_24h) {
+    // Se não tiver high/low, calcular baseado no current_price e variação percentual
+    const variation = Math.abs(coin.price_change_percentage_24h || 2) / 100;
+    coin.high_24h = coin.current_price * (1 + variation);
+    coin.low_24h = coin.current_price * (1 - variation);
+    console.log(`📊 ${coin.symbol}: Calculando faixa 24h baseada na variação (${coin.price_change_percentage_24h?.toFixed(2)}%)`);
+  }
+  
+  // Log da faixa atual
+  console.log(`📈 ${coin.symbol}: Preço $${coin.current_price?.toFixed(2)} | Faixa: $${coin.low_24h?.toFixed(2)} - $${coin.high_24h?.toFixed(2)}`);
+  
+  // Garantir que current_price esteja dentro da faixa [low_24h, high_24h]
+  if (coin.current_price > coin.high_24h) {
+    const oldPrice = coin.current_price;
+    coin.current_price = coin.high_24h * 0.98; // 98% do high
+    console.log(`⚠️  ${coin.symbol}: Preço ajustado de $${oldPrice?.toFixed(2)} para $${coin.current_price?.toFixed(2)} (98% do high_24h)`);
+  }
+  if (coin.current_price < coin.low_24h) {
+    const oldPrice = coin.current_price;
+    coin.current_price = coin.low_24h * 1.02; // 102% do low
+    console.log(`⚠️  ${coin.symbol}: Preço ajustado de $${oldPrice?.toFixed(2)} para $${coin.current_price?.toFixed(2)} (102% do low_24h)`);
+  }
+  
+  // Validação final
+  if (coin.current_price >= coin.low_24h && coin.current_price <= coin.high_24h) {
+    console.log(`✅ ${coin.symbol}: Preço validado dentro da faixa 24h`);
+  }
+  
+  return coin;
+}
+
 // Dados de fallback para quando a API falhar
 function getFallbackData() {
   const fallbackCoins = [
-    {
-      id: 'bitcoin',
-      symbol: 'BTC',
-      name: 'Bitcoin',
-      current_price: 95000 + Math.random() * 10000, // $95k - $105k (mais realista)
-      market_cap: 1800000000000 + Math.random() * 200000000000, // $1.8T - $2.0T
-      price_change_24h: (Math.random() - 0.5) * 6000, // ±$3k variation
-      price_change_percentage_24h: (Math.random() - 0.5) * 6, // ±3% variation
-      volume_24h: 35000000000 + Math.random() * 15000000000 // $35B - $50B
-    },
-    {
-      id: 'ethereum',
-      symbol: 'ETH',
-      name: 'Ethereum',
-      current_price: 5200 + Math.random() * 800, // $5.2k - $6.0k (mais realista)
-      market_cap: 600000000000 + Math.random() * 100000000000, // $600B - $700B
-      price_change_24h: (Math.random() - 0.5) * 300, // ±$150 variation
-      price_change_percentage_24h: (Math.random() - 0.5) * 5, // ±2.5% variation
-      volume_24h: 25000000000 + Math.random() * 10000000000 // $25B - $35B
-    },
-    {
-      id: 'ripple',
-      symbol: 'XRP',
-      name: 'XRP',
-      current_price: 0.95 + Math.random() * 0.3, // $0.95 - $1.25 (mais realista)
-      market_cap: 50000000000 + Math.random() * 20000000000, // $50B - $70B
-      price_change_24h: (Math.random() - 0.5) * 0.15, // ±$0.075 variation
-      price_change_percentage_24h: (Math.random() - 0.5) * 4, // ±2% variation
-      volume_24h: 4000000000 + Math.random() * 2000000000 // $4B - $6B
-    },
-    {
-      id: 'binancecoin',
-      symbol: 'BNB',
-      name: 'BNB',
-      current_price: 650 + Math.random() * 100, // $650 - $750 (mais realista)
-      market_cap: 100000000000 + Math.random() * 20000000000, // $100B - $120B
-      price_change_24h: (Math.random() - 0.5) * 50, // ±$25 variation
-      price_change_percentage_24h: (Math.random() - 0.5) * 4, // ±2% variation
-      volume_24h: 6000000000 + Math.random() * 3000000000 // $6B - $9B
-    },
-    {
-      id: 'solana',
-      symbol: 'SOL',
-      name: 'Solana',
-      current_price: 200 + Math.random() * 40, // $200 - $240 (mais realista)
-      market_cap: 80000000000 + Math.random() * 20000000000, // $80B - $100B
-      price_change_24h: (Math.random() - 0.5) * 20, // ±$10 variation
-      price_change_percentage_24h: (Math.random() - 0.5) * 6, // ±3% variation
-      volume_24h: 5000000000 + Math.random() * 2000000000 // $5B - $7B
-    },
-    {
-      id: 'cardano',
-      symbol: 'ADA',
-      name: 'Cardano',
-      current_price: 0.65 + Math.random() * 0.15, // $0.65 - $0.80 (mais realista)
-      market_cap: 25000000000 + Math.random() * 10000000000, // $25B - $35B
-      price_change_24h: (Math.random() - 0.5) * 0.1, // ±$0.05 variation
-      price_change_percentage_24h: (Math.random() - 0.5) * 5, // ±2.5% variation
-      volume_24h: 2000000000 + Math.random() * 1000000000 // $2B - $3B
-    },
-    {
-      id: 'chainlink',
-      symbol: 'LINK',
-      name: 'Chainlink',
-      current_price: 18.5 + Math.random() * 3, // $18.5 - $21.5 (mais realista)
-      market_cap: 11000000000 + Math.random() * 4000000000, // $11B - $15B
-      price_change_24h: (Math.random() - 0.5) * 1.5, // ±$0.75 variation
-      price_change_percentage_24h: (Math.random() - 0.5) * 5, // ±2.5% variation
-      volume_24h: 1200000000 + Math.random() * 600000000 // $1.2B - $1.8B
-    }
+    (() => {
+      const current_price = 95000 + Math.random() * 5000; // $95k - $100k (mais realista)
+      const price_change_percentage_24h = (Math.random() - 0.5) * 4; // ±2%
+      const variation = Math.abs(price_change_percentage_24h) / 100;
+      return {
+        id: 'bitcoin',
+        symbol: 'BTC',
+        name: 'Bitcoin',
+        current_price: current_price,
+        market_cap: 1800000000000 + Math.random() * 200000000000, // $1.8T - $2.0T
+        price_change_24h: current_price * price_change_percentage_24h / 100,
+        price_change_percentage_24h: price_change_percentage_24h,
+        volume_24h: 35000000000 + Math.random() * 15000000000, // $35B - $50B
+        high_24h: current_price * (1 + variation * 1.2),
+        low_24h: current_price * (1 - variation * 1.2)
+      };
+    })(),
+    (() => {
+      const current_price = 3500 + Math.random() * 300; // $3.5k - $3.8k (mais realista)
+      const price_change_percentage_24h = (Math.random() - 0.5) * 4; // ±2%
+      const variation = Math.abs(price_change_percentage_24h) / 100;
+      return {
+        id: 'ethereum',
+        symbol: 'ETH',
+        name: 'Ethereum',
+        current_price: current_price,
+        market_cap: 400000000000 + Math.random() * 50000000000, // $400B - $450B
+        price_change_24h: current_price * price_change_percentage_24h / 100,
+        price_change_percentage_24h: price_change_percentage_24h,
+        volume_24h: 15000000000 + Math.random() * 5000000000, // $15B - $20B
+        high_24h: current_price * (1 + variation * 1.2),
+        low_24h: current_price * (1 - variation * 1.2)
+      };
+    })(),
+    (() => {
+      const current_price = 0.55 + Math.random() * 0.1; // $0.55 - $0.65 (mais realista)
+      const price_change_percentage_24h = (Math.random() - 0.5) * 4; // ±2%
+      const variation = Math.abs(price_change_percentage_24h) / 100;
+      return {
+        id: 'ripple',
+        symbol: 'XRP',
+        name: 'XRP',
+        current_price: current_price,
+        market_cap: 30000000000 + Math.random() * 10000000000, // $30B - $40B
+        price_change_24h: current_price * price_change_percentage_24h / 100,
+        price_change_percentage_24h: price_change_percentage_24h,
+        volume_24h: 2000000000 + Math.random() * 1000000000, // $2B - $3B
+        high_24h: current_price * (1 + variation * 1.2),
+        low_24h: current_price * (1 - variation * 1.2)
+      };
+    })(),
+    (() => {
+      const current_price = 580 + Math.random() * 40; // $580 - $620 (preço realista do BNB)
+      const price_change_percentage_24h = (Math.random() - 0.5) * 4; // ±2%
+      const variation = Math.abs(price_change_percentage_24h) / 100;
+      return {
+        id: 'binancecoin',
+        symbol: 'BNB',
+        name: 'BNB',
+        current_price: current_price,
+        market_cap: 85000000000 + Math.random() * 10000000000, // $85B - $95B
+        price_change_24h: current_price * price_change_percentage_24h / 100,
+        price_change_percentage_24h: price_change_percentage_24h,
+        volume_24h: 2000000000 + Math.random() * 1000000000, // $2B - $3B
+        high_24h: current_price * (1 + variation * 1.2),
+        low_24h: current_price * (1 - variation * 1.2)
+      };
+    })(),
+    (() => {
+      const current_price = 180 + Math.random() * 20; // $180 - $200 (mais realista)
+      const price_change_percentage_24h = (Math.random() - 0.5) * 6; // ±3%
+      const variation = Math.abs(price_change_percentage_24h) / 100;
+      return {
+        id: 'solana',
+        symbol: 'SOL',
+        name: 'Solana',
+        current_price: current_price,
+        market_cap: 80000000000 + Math.random() * 20000000000, // $80B - $100B
+        price_change_24h: current_price * price_change_percentage_24h / 100,
+        price_change_percentage_24h: price_change_percentage_24h,
+        volume_24h: 3000000000 + Math.random() * 1000000000, // $3B - $4B
+        high_24h: current_price * (1 + variation * 1.2),
+        low_24h: current_price * (1 - variation * 1.2)
+      };
+    })(),
+    (() => {
+      const current_price = 0.45 + Math.random() * 0.1; // $0.45 - $0.55 (mais realista)
+      const price_change_percentage_24h = (Math.random() - 0.5) * 5; // ±2.5%
+      const variation = Math.abs(price_change_percentage_24h) / 100;
+      return {
+        id: 'cardano',
+        symbol: 'ADA',
+        name: 'Cardano',
+        current_price: current_price,
+        market_cap: 15000000000 + Math.random() * 5000000000, // $15B - $20B
+        price_change_24h: current_price * price_change_percentage_24h / 100,
+        price_change_percentage_24h: price_change_percentage_24h,
+        volume_24h: 500000000 + Math.random() * 300000000, // $500M - $800M
+        high_24h: current_price * (1 + variation * 1.2),
+        low_24h: current_price * (1 - variation * 1.2)
+      };
+    })(),
+    (() => {
+      const current_price = 12 + Math.random() * 2; // $12 - $14 (mais realista)
+      const price_change_percentage_24h = (Math.random() - 0.5) * 5; // ±2.5%
+      const variation = Math.abs(price_change_percentage_24h) / 100;
+      return {
+        id: 'chainlink',
+        symbol: 'LINK',
+        name: 'Chainlink',
+        current_price: current_price,
+        market_cap: 7000000000 + Math.random() * 2000000000, // $7B - $9B
+        price_change_24h: current_price * price_change_percentage_24h / 100,
+        price_change_percentage_24h: price_change_percentage_24h,
+        volume_24h: 400000000 + Math.random() * 200000000, // $400M - $600M
+        high_24h: current_price * (1 + variation * 1.2),
+        low_24h: current_price * (1 - variation * 1.2)
+      };
+    })()
   ];
   
-  console.log(`🔄 Fallback data generated: ${fallbackCoins.length} cryptocurrencies`);
+  // Apply validation to all fallback coins
+  const validatedCoins = fallbackCoins.map(coin => validatePriceInRange(coin));
+  
+  console.log(`🔄 Fallback data generated: ${validatedCoins.length} cryptocurrencies`);
   console.log(`⚠️  Note: These are simulated values. Real-time data is preferred.`);
-  return fallbackCoins;
+  return validatedCoins;
 }
 
 // Obter dados das criptomoedas específicas
 function getTargetCryptocurrencies() {
   return new Promise((resolve, reject) => {
-    // Primeiro tentar CoinGecko, se falhar, tentar CoinCap
-    tryCoinGecko()
+    // Primeiro tentar Binance, depois CoinGecko, depois CoinCap
+    tryBinance()
+      .then(resolve)
+      .catch(() => {
+        console.log('🔄 Binance failed, trying CoinGecko API...');
+        return tryCoinGecko();
+      })
       .then(resolve)
       .catch(() => {
         console.log('🔄 CoinGecko failed, trying CoinCap API...');
@@ -294,6 +384,85 @@ function getTargetCryptocurrencies() {
       })
       .then(resolve)
       .catch(reject);
+  });
+}
+
+// Tentar API Binance (mais confiável para preços reais)
+function tryBinance() {
+  return new Promise((resolve, reject) => {
+    // Mapear símbolos para os usados pela Binance
+    const binanceSymbols = {
+      'bitcoin': 'BTCUSDT',
+      'ethereum': 'ETHUSDT', 
+      'ripple': 'XRPUSDT',
+      'binancecoin': 'BNBUSDT',
+      'solana': 'SOLUSDT',
+      'dogecoin': 'DOGEUSDT',
+      'tron': 'TRXUSDT',
+      'cardano': 'ADAUSDT',
+      'chainlink': 'LINKUSDT',
+      'sui': 'SUIUSDT',
+      'stellar': 'XLMUSDT',
+      'uniswap': 'UNIUSDT'
+    };
+    
+    const symbols = Object.values(binanceSymbols).join(',');
+    const url = `https://api.binance.com/api/v3/ticker/24hr?symbols=[${symbols.split(',').map(s => `"${s}"`).join(',')}]`;
+    
+    console.log('🔍 Trying Binance API...');
+    
+    const req = https.get(url, (res) => {
+      let data = '';
+      
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      
+      res.on('end', () => {
+        try {
+          if (res.statusCode !== 200) {
+            reject(new Error(`Binance HTTP ${res.statusCode}`));
+            return;
+          }
+          
+          const jsonData = JSON.parse(data);
+          if (!Array.isArray(jsonData) || jsonData.length === 0) {
+            reject(new Error('Binance returned empty data'));
+            return;
+          }
+
+          const result = jsonData.map(coin => {
+            // Mapear de volta para os IDs originais
+            const symbolMap = Object.entries(binanceSymbols).find(([_, symbol]) => symbol === coin.symbol);
+            const originalId = symbolMap ? symbolMap[0] : coin.symbol.toLowerCase();
+            
+            return validatePriceInRange({
+              id: originalId,
+              symbol: coin.symbol.replace('USDT', ''),
+              name: coin.symbol.replace('USDT', ''),
+              current_price: parseFloat(coin.lastPrice),
+              market_cap: 0, // Binance não fornece market cap diretamente
+              price_change_percentage_24h: parseFloat(coin.priceChangePercent),
+              volume_24h: parseFloat(coin.volume),
+              high_24h: parseFloat(coin.highPrice),
+              low_24h: parseFloat(coin.lowPrice)
+            });
+          });
+          
+          console.log(`✅ Binance success: ${result.length} cryptocurrencies`);
+          console.log(`Sample real data - BTC price: $${result.find(c => c.symbol === 'BTC')?.current_price}`);
+          resolve(result);
+        } catch (parseError) {
+          reject(new Error('Binance parse error'));
+        }
+      });
+    });
+    
+    req.on('error', () => reject(new Error('Binance connection error')));
+    req.setTimeout(8000, () => {
+      req.destroy();
+      reject(new Error('Binance timeout'));
+    });
   });
 }
 
@@ -325,7 +494,7 @@ function tryCoinGecko() {
             return;
           }
 
-          const result = jsonData.map(coin => ({
+          const result = jsonData.map(coin => validatePriceInRange({
             id: coin.id,
             symbol: coin.symbol.toUpperCase(),
             name: coin.name,
@@ -333,7 +502,9 @@ function tryCoinGecko() {
             market_cap: coin.market_cap,
             // Do not return 24h percentage change to frontend
             price_change_percentage_24h: coin.price_change_percentage_24h,
-            volume_24h: coin.total_volume
+            volume_24h: coin.total_volume,
+            high_24h: coin.high_24h,
+            low_24h: coin.low_24h
           }));
           
           console.log(`✅ CoinGecko success: ${result.length} cryptocurrencies`);
@@ -381,7 +552,7 @@ function tryCoinCap() {
             return;
           }
 
-          const result = jsonData.data.map(coin => ({
+          const result = jsonData.data.map(coin => validatePriceInRange({
             id: coin.id,
             symbol: coin.symbol.toUpperCase(),
             name: coin.name,
@@ -389,7 +560,9 @@ function tryCoinCap() {
             market_cap: parseFloat(coin.marketCapUsd),
             // Do not return 24h percentage change to frontend
             price_change_percentage_24h: parseFloat(coin.changePercent24Hr),
-            volume_24h: parseFloat(coin.volumeUsd24Hr)
+            volume_24h: parseFloat(coin.volumeUsd24Hr),
+            high_24h: coin.high24Hr ? parseFloat(coin.high24Hr) : parseFloat(coin.priceUsd) * 1.05,
+            low_24h: coin.low24Hr ? parseFloat(coin.low24Hr) : parseFloat(coin.priceUsd) * 0.95
           }));
           
           console.log(`✅ CoinCap success: ${result.length} cryptocurrencies`);

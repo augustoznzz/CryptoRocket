@@ -243,6 +243,12 @@ header p {
     border: 1px solid rgba(255, 82, 82, 0.3);
 }
 
+.signal-neutral {
+    background: rgba(255, 204, 0, 0.2);
+    color: #ffcc00;
+    border: 1px solid rgba(255, 204, 0, 0.3);
+}
+
 .potential-gain {
     font-size: 1.1rem;
     font-weight: 600;

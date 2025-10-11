@@ -258,6 +258,12 @@
             border: 1px solid rgba(255, 82, 82, 0.3);
         }
 
+        .signal-neutral {
+            background: rgba(255, 204, 0, 0.2);
+            color: #ffcc00;
+            border: 1px solid rgba(255, 204, 0, 0.3);
+        }
+
         .potential-gain {
             font-size: 1.1rem;
             font-weight: 600;
@@ -734,7 +740,7 @@
                 const card = document.createElement('div');
                 card.className = 'trade-card';
                 
-                const signalTypeClass = result.type === 'LONG' ? 'signal-long' : 'signal-short';
+                const signalTypeClass = result.type === 'LONG' ? 'signal-long' : (result.type === 'SHORT' ? 'signal-short' : 'signal-neutral');
                 const emoji = result.type === 'LONG' ? '🔼' : '🔽';
                 
                 // Add price information only (no 24h percentage)
