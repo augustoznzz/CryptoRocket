@@ -5,26 +5,37 @@
     box-sizing: border-box;
 }
 
+/* Ensure full screen coverage with safe area support */
+html {
+    background-color: #0c0c0c !important; /* Solid fallback */
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+    background-attachment: fixed !important; /* Fix background position */
+    min-height: 100vh;
+    min-height: 100dvh;
+    min-height: -webkit-fill-available;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    overflow-y: auto;
+    /* Safe area insets for notch devices */
+    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+}
+
 html, body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important; /* Fundo escuro para cobrir áreas seguras em mobile */
+    background-color: #0c0c0c !important; /* Solid fallback */
+    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+    background-attachment: fixed !important; /* Fix background position */
     color: #e0e0e0;
     min-height: 100vh;
     min-height: 100dvh; /* Dynamic viewport height for mobile */
+    min-height: -webkit-fill-available;
     line-height: 1.6;
     position: relative;
     overflow-x: hidden;
     /* Force full coverage */
     height: 100%;
     width: 100%;
-}
-
-/* Ensure full screen coverage */
-html {
-    background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important; /* Garantir pintura do topo/rodapé em mobile */
-    min-height: 100vh;
-    min-height: 100dvh;
-    height: 100%;
 }
 
 /* Particles Canvas - FUNDO ÚNICO COM PARTÍCULAS */
@@ -36,12 +47,15 @@ html {
     bottom: 0;
     width: 100%;
     min-height: 100vh;
+    min-height: 100dvh;
     min-height: -webkit-fill-available;
     height: 100dvh;
     z-index: 0;
     pointer-events: none;
     touch-action: none;
+    background-color: #0c0c0c; /* Solid fallback */
     background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%); /* Fundo único aqui */
+    background-attachment: fixed;
 }
 
 .container {
@@ -322,12 +336,49 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    html, body {
+    html {
+        background-color: #0c0c0c !important;
         background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
-        overflow-x: hidden;
+        background-attachment: fixed !important;
+        overflow: hidden;
+        overflow-y: auto;
         min-height: 100vh;
         min-height: 100dvh;
+        min-height: -webkit-fill-available;
         height: 100%;
+    }
+    
+    body {
+        background-color: #0c0c0c !important;
+        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+        background-attachment: fixed !important;
+        overflow-x: hidden;
+        overflow-y: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
+        min-height: -webkit-fill-available;
+        height: 100%;
+        width: 100%;
+        position: relative;
+    }
+    
+    /* Prevent white bars with pseudo-element coverage */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        min-height: 100vh;
+        min-height: 100dvh;
+        min-height: -webkit-fill-available;
+        background-color: #0c0c0c;
+        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+        z-index: -10;
+        pointer-events: none;
     }
     
     .container {
@@ -335,6 +386,7 @@ footer {
         background: transparent;
         min-height: 100vh;
         min-height: 100dvh;
+        min-height: -webkit-fill-available;
     }
     
     header h1 {
@@ -374,10 +426,23 @@ footer {
 
 /* Mobile-specific fixes */
 @media (max-width: 480px) {
-    html, body {
+    html {
+        background-color: #0c0c0c !important;
         background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+        background-attachment: fixed !important;
         min-height: 100vh;
         min-height: 100dvh;
+        min-height: -webkit-fill-available;
+        height: 100%;
+    }
+    
+    body {
+        background-color: #0c0c0c !important;
+        background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%) !important;
+        background-attachment: fixed !important;
+        min-height: 100vh;
+        min-height: 100dvh;
+        min-height: -webkit-fill-available;
         height: 100%;
     }
     
@@ -386,6 +451,7 @@ footer {
         background: transparent;
         min-height: 100vh;
         min-height: 100dvh;
+        min-height: -webkit-fill-available;
     }
     
     .trade-card {
